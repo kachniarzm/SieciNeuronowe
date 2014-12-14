@@ -26,7 +26,8 @@ $RECYCLE.BIN/
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*
@@ -41,3 +42,14 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+MLP Basic/MLP Logic/bin/
+MLP Basic/MLP Logic/obj/
+MLP Basic/Unit Tests/bin/
+MLP Basic/Unit Tests/obj/
+MLP Basic/MLP GUI/bin/
+MLP Basic/MLP GUI/obj/
+MLP Basic/MLP Data/bin/
+MLP Basic/MLP Data/obj/
+MLP Basic/Graphics/bin/
+MLP Basic/Graphics/obj/
+
