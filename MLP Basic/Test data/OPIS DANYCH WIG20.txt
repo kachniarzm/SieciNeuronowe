@@ -1,4 +1,16 @@
 SMA	Simple Moving Average
+
+SMA liczymy jako œrednia z wartoœci zamkniêcia gie³dy z X ostatnich dni (X = 15, 30, 45)
+
 WMA	Weighted Moving Average
+
+liczymy jako œrednia wa¿ona z X dni (z wartoœci zamkniêcia gie³dy)
+
 EMA	Exponential Moving Average
+
+EMAakt = (CENAakt * (2/n+1))+(EMApoprz(1-2/(n+1)))
+
 RSI	Relative Strength Index – WskaŸnik Si³y Wzglêdnej
+
+RSI = 100 - 100/(1+RS)
+RS = œredni wzrost z danego okresu/ œredni spadek z danego okresu 
