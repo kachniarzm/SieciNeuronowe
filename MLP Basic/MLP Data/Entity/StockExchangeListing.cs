@@ -13,6 +13,17 @@ namespace MLP_Data.Entity
         public double Closing { get; set; }
         public double PrecentageChange { get; set; }
         public double Volume { get; set; }
+        public double Sma15 { get; set; }
+        public double Sma30 { get; set; }
+        public double Sma45 { get; set; }
+        public double Wma15 { get; set; }
+        public double Wma30 { get; set; }
+        public double Wma45 { get; set; }
+        public double Ema { get; set; }
+        public double Rsi7 { get; set; }
+        public double Rsi9 { get; set; }
+        public double Rsi14 { get; set; }
+        public double StochasticOscilator14 { get; set; }
         public DateTime Date { get; set; }
         public IndexName IndexName { get; set; }
     }
