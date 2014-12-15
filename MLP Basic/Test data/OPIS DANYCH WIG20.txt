@@ -1,0 +1,4 @@
+SMA	Simple Moving Average
+WMA	Weighted Moving Average
+EMA	Exponential Moving Average
+RSI	Relative Strength Index – WskaŸnik Si³y Wzglêdnej
