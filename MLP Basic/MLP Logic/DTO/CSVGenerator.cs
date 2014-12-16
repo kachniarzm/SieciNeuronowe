@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace MLP_Logic.DTO
 {
@@ -12,10 +12,10 @@ namespace MLP_Logic.DTO
     {
         public static void CreateCSVFile(String url, List<String> inputKeys, List<String> outputKeys, ResultDTO resultDTO, TaskType type)
         {
-            System.Globalization.CultureInfo oldCulture = (System.Globalization.CultureInfo)System.Threading.Thread.CurrentThread.CurrentCulture.Clone();
-            System.Globalization.CultureInfo customCulture = (System.Globalization.CultureInfo)System.Threading.Thread.CurrentThread.CurrentCulture.Clone();
+            CultureInfo oldCulture = (CultureInfo)Thread.CurrentThread.CurrentCulture.Clone();
+            CultureInfo customCulture = (CultureInfo)Thread.CurrentThread.CurrentCulture.Clone();
             customCulture.NumberFormat.NumberDecimalSeparator = ".";
-            System.Threading.Thread.CurrentThread.CurrentCulture = customCulture;
+            Thread.CurrentThread.CurrentCulture = customCulture;
 
             string filePath = url;
             string delimeter = ",";
@@ -56,7 +56,7 @@ namespace MLP_Logic.DTO
             }
 
             File.WriteAllText(filePath, sb.ToString());
-            System.Threading.Thread.CurrentThread.CurrentCulture = oldCulture;
+            Thread.CurrentThread.CurrentCulture = oldCulture;
         }
     }
 }

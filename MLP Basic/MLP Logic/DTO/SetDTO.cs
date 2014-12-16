@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MLP_Logic.DTO
 {
@@ -45,7 +42,7 @@ namespace MLP_Logic.DTO
                     for (int i = 0; i < values.Length; i++)
                     {
                         double value;
-                        if (!double.TryParse(values[i], System.Globalization.NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out value))
+                        if (!double.TryParse(values[i], NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out value))
                         {
                             throw new FormatException("Format invalid");
                         }
