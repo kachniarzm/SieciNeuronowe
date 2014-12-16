@@ -136,7 +136,7 @@ namespace MLP_Logic.Logic
         public ResultDTO Run(NeuronNetworkDTO neuronNetworkDto)
         {
             List<TestCase> data;     
-            data = CasesCreator.Create(CsvReader.GetData(predictionChoice, GetTypeByPredictionChoice()),
+            data = CasesCreator.Create(CsvReader.GetData(predictionChoice, CasesCreator.GetTypeByPredictionChoice(predictionChoice)),
                    windowLength, density, step).ToList();
             SetNeuronNetwork(neuronNetworkDto, data[0].Input.Count());
 
@@ -204,15 +204,7 @@ namespace MLP_Logic.Logic
             result.LastCorrectDirectionPredictionsRate = factors.Last();
         }
 
-        private Type GetTypeByPredictionChoice()
-        {
-            if (predictionChoice == IndexName.WIG20)
-                return typeof (StockExchangeListing);
-            if (predictionChoice == IndexName.SP500)
-                return typeof(StockExchangeListingBase);
-
-            throw new ArgumentException("GetTypeByPredictionChoice");
-        }
+        
 
         private ResultDTO SetResult(int inputParams, int outputParams)
         {

@@ -5,6 +5,7 @@
         Undefined,
         WIG20,
         SP500,
-        TimeSeries
+        TimeSeries,
+        SinFunction,
     }
 }

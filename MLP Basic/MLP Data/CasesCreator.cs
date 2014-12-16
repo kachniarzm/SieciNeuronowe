@@ -53,5 +53,17 @@ namespace MLP_Data
                 yield return testCase;
             }
         }
+
+        public static Type GetTypeByPredictionChoice(IndexName predictionChoice)
+        {
+            if (predictionChoice == IndexName.WIG20)
+                return typeof(StockExchangeListing);
+            if (predictionChoice == IndexName.SP500)
+                return typeof(StockExchangeListingBase);
+            if (predictionChoice == IndexName.SinFunction)
+                return typeof(Function1);
+
+            throw new ArgumentException("GetTypeByPredictionChoice");
+        }
     }
 }
