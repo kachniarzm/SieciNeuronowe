@@ -110,12 +110,18 @@ namespace MLP_Basic.ViewModels
             StandardPlotModel = new PlotModel();
 
             InitializePlot();
+
+            SelectedNeuronNetworkType = NeuronNetworkType.MLP;
+            SelectedWindowLength = InputDataDateUnits.Week;
+            SelectedDensity = InputDataDateUnits.Day;
+            SelectedStep = InputDataDateUnits.Day;
+            SelectedIndexName = IndexName.WIG20;
         }
 
         private void InitializePlot()
         {
-            SpecialCasePlotModel.Title = "Result";
-            StandardPlotModel.Title = "Result";
+            SpecialCasePlotModel.Title = "Stock Index";
+            StandardPlotModel.Title = "Error per iterations";
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

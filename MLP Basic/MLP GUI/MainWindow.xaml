@@ -37,8 +37,8 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <!--<ProgressBar MinWidth="400" Name="ProgresBarVal" Value="0" Maximum="100" Minimum="0"></ProgressBar>-->
-            <oxy:Plot Grid.Row="1" x:Name="specialcasePlot" Model="{Binding SpecialCasePlotModel}" Title="Result #1"></oxy:Plot>
-            <oxy:Plot Grid.Row="2" x:Name="standardPlot" Model="{Binding StandardPlotModel}" Title="Result #2"></oxy:Plot>
+            <oxy:Plot Grid.Row="1" x:Name="specialcasePlot" Model="{Binding SpecialCasePlotModel}" Title="Stock Index"></oxy:Plot>
+            <oxy:Plot Grid.Row="2" x:Name="standardPlot" Model="{Binding StandardPlotModel}" Title="Error per iterations"></oxy:Plot>
         </Grid>  
         <Label>Network structure:</Label>
         <TextBox Grid.Column="1" Name="neuronStructure" Width="80" Height="20" Text="3;1"></TextBox>

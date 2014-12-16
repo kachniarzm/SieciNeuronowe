@@ -80,12 +80,13 @@ namespace MLP_GUI
 
             if (result != null)
             {
-                viewModel.SpecialCasePlotModel.Title = "Result";
+                viewModel.SpecialCasePlotModel.Title = "Stock Index";
 
                 var networkPredictionLineSeries = new LineSeries
                 {
                     LineStyle = LineStyle.Solid,
-                    MarkerType = MarkerType.Circle
+                    MarkerType = MarkerType.Circle,
+                    Title = "Network Prediction"
                 };
                 networkPredictionLineSeries.MarkerSize = networkPredictionLineSeries.MarkerSize*0.5;
                 networkPredictionLineSeries.MarkerFill = OxyColors.Red;
@@ -94,7 +95,8 @@ namespace MLP_GUI
                 var testCaseLineSeries = new LineSeries 
                 {
                     LineStyle = LineStyle.Solid,
-                    MarkerType = MarkerType.Circle
+                    MarkerType = MarkerType.Circle,
+                    Title = "Test Cases Stock Index"
                 };
                 testCaseLineSeries.MarkerSize = testCaseLineSeries.MarkerSize*0.5;
                 testCaseLineSeries.MarkerFill = OxyColors.Black;
@@ -103,7 +105,8 @@ namespace MLP_GUI
                 var trainingCaseLineSeries = new LineSeries
                 {
                     LineStyle = LineStyle.Solid,
-                    MarkerType = MarkerType.Circle
+                    MarkerType = MarkerType.Circle,
+                    Title = "Training Cases Stock Index"
                 };
                 trainingCaseLineSeries.MarkerSize = trainingCaseLineSeries.MarkerSize * 0.5;
                 trainingCaseLineSeries.MarkerFill = OxyColors.Blue;
@@ -128,7 +131,7 @@ namespace MLP_GUI
                 viewModel.SpecialCasePlotModel.Series.Add(testCaseLineSeries);
                 viewModel.SpecialCasePlotModel.Series.Add(networkPredictionLineSeries);
 
-                viewModel.StandardPlotModel.Title = "Result";
+                viewModel.StandardPlotModel.Title = "Error per iterations";
 
                 var lineSeries3 = new LineSeries
                 {
@@ -143,17 +146,20 @@ namespace MLP_GUI
                 viewModel.StandardPlotModel.Series.Add(lineSeries3);
 
                 var linearAxis1 = new LinearAxis();
+                linearAxis1.Minimum = 0;
                 linearAxis1.MaximumPadding = 0.1;
                 linearAxis1.MinimumPadding = 0.1;
                 linearAxis1.Position = AxisPosition.Bottom;
-                linearAxis1.Title = String.Empty;
+                linearAxis1.Title = "Day";
                 viewModel.SpecialCasePlotModel.Axes.Add(linearAxis1);
 
                 var linearAxis2 = new LinearAxis();
-                linearAxis2.Title = String.Empty;
+                linearAxis2.Minimum = 0;
+                linearAxis2.Title = "Index Value";
                 viewModel.SpecialCasePlotModel.Axes.Add(linearAxis2);
 
                 var linearAxis3 = new LinearAxis();
+                linearAxis3.Minimum = 1;
                 linearAxis3.MaximumPadding = 0.1;
                 linearAxis3.MinimumPadding = 0.1;
                 linearAxis3.Position = AxisPosition.Bottom;
@@ -161,6 +167,7 @@ namespace MLP_GUI
                 viewModel.StandardPlotModel.Axes.Add(linearAxis3);
 
                 var linearAxis4 = new LinearAxis();
+                linearAxis4.Minimum = 0;
                 linearAxis4.Title = "Error";
                 viewModel.StandardPlotModel.Axes.Add(linearAxis4);
             }
@@ -237,7 +244,7 @@ For example: 2;3;4 stands for two neurons in input layer, three in next one and 
 
         private void UpdateTitle()
         {
-            Title = String.Format("MLP Basic by Kachniarz &amp; Luśtyk {0}", DateTime.Now);
+            Title = String.Format("MLP Basic by Kachniarz and Luśtyk {0}", DateTime.Now);
         }
     }
 }
