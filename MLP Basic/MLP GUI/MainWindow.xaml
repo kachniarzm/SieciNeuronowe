@@ -75,10 +75,10 @@
         <Label Grid.Column="4" Grid.Row="3">First pred rate:</Label>
         <Label Grid.Column="4" Grid.Row="4">Last pred rate:</Label>
         <Label Grid.Column="4" Grid.Row="5">Average pred rate:</Label>
-        <Label Grid.Column="5" Grid.Row="1" Name="MaxPredRateLabel"></Label>
-        <Label Grid.Column="5" Grid.Row="2" Name="MinPredRateLabel"></Label>
-        <Label Grid.Column="5" Grid.Row="3" Name="FirstPredRateLabel"></Label>
-        <Label Grid.Column="5" Grid.Row="4" Name="LastPredRateLabel"></Label>
-        <Label Grid.Column="5" Grid.Row="5" Name="AveragePredRateLabel"></Label>
+        <Label Grid.Column="5" Grid.Row="1" FontWeight="Bold" Name="MaxPredRateLabel"></Label>
+        <Label Grid.Column="5" Grid.Row="2" FontWeight="Bold" Name="MinPredRateLabel"></Label>
+        <Label Grid.Column="5" Grid.Row="3" FontWeight="Bold" Name="FirstPredRateLabel"></Label>
+        <Label Grid.Column="5" Grid.Row="4" FontWeight="Bold" Name="LastPredRateLabel"></Label>
+        <Label Grid.Column="5" Grid.Row="5" FontWeight="Bold" Name="AveragePredRateLabel"></Label>
     </Grid>
 </Window>

@@ -7,6 +7,7 @@ using OxyPlot.Series;
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace MLP_GUI
 {
@@ -64,11 +65,26 @@ namespace MLP_GUI
 
         private void FillPerformanceIndicators(ResultDTO result)
         {
-            MaxPredRateLabel.Content = result.MaxCorrectDirectionPredictionsRate.ToString("F4");
-            MinPredRateLabel.Content = result.MinCorrectDirectionPredictionsRate.ToString("F4");
-            FirstPredRateLabel.Content = result.FirstCorrectDirectionPredictionsRate.ToString("F4");
-            LastPredRateLabel.Content = result.LastCorrectDirectionPredictionsRate.ToString("F4");
-            AveragePredRateLabel.Content = result.AverageCorrectDirectionPredictionsRate.ToString("F4");
+            FillLaxbel(MaxPredRateLabel, result.MaxCorrectDirectionPredictionsRate);
+            FillLaxbel(MinPredRateLabel, result.MinCorrectDirectionPredictionsRate);
+            FillLaxbel(FirstPredRateLabel, result.FirstCorrectDirectionPredictionsRate);
+            FillLaxbel(LastPredRateLabel, result.LastCorrectDirectionPredictionsRate);
+            FillLaxbel(AveragePredRateLabel, result.AverageCorrectDirectionPredictionsRate);
+        }
+
+        private void FillLaxbel(Label label, double number)
+        {
+            label.Content = number.ToString("F4");
+            if (number < 0.5)
+                label.Foreground = new SolidColorBrush(Colors.Red);
+            else if (number < 0.525)
+                label.Foreground = new SolidColorBrush(Colors.DarkOrange);
+            else if (number < 0.55)
+                label.Foreground = new SolidColorBrush(Colors.Yellow);
+            else if (number < 0.575)
+                label.Foreground = new SolidColorBrush(Colors.LawnGreen);
+            else
+                label.Foreground = new SolidColorBrush(Colors.Green);
         }
 
         private void DrawChart(ResultDTO result)
