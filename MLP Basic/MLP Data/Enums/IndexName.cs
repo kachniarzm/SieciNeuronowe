@@ -7,5 +7,7 @@
         SP500,
         TimeSeries,
         SinFunction,
+        SecondFunction,
+        ThirdFunction
     }
 }
