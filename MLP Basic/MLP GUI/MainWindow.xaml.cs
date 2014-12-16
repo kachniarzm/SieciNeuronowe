@@ -56,6 +56,8 @@ namespace MLP_GUI
                 }
 #endif
                 DrawChart(result);
+
+                MessageBox.Show("Task completed", "Task completed", MessageBoxButton.OK);
             }
         }
 
