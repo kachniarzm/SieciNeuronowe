@@ -169,7 +169,7 @@ namespace MLP_GUI
 
             if (!neuronNetwork.IsValid)
             {
-                MessageBox.Show(String.Format("Network structure: {0}", neuronNetworkDto.Exceptions[0]), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(String.Format("Network structure: {0}", neuronNetwork.Exceptions[0]), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return null;
             }
             return neuronNetwork;
@@ -188,7 +188,7 @@ namespace MLP_GUI
 
             if (!environment.IsValid)
             {
-                MessageBox.Show(environmentDto.Exceptions[0], "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(environment.Exceptions[0], "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return null;
             }
 
