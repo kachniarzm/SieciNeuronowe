@@ -42,6 +42,7 @@
     <Compile Include="Configuration.cs" />
     <Compile Include="CsvReader.cs" />
     <Compile Include="CasesCreator.cs" />
+    <Compile Include="Entity\StockExchangeListingBase.cs" />
     <Compile Include="Entity\StockExchangeListing.cs" />
     <Compile Include="Entity\TestCase.cs" />
     <Compile Include="Enums\IndexName.cs" />

@@ -96,7 +96,7 @@ namespace MLP_Logic.Logic
         public ResultDTO Run(NeuronNetworkDTO neuronNetworkDto)
         {
             List<TestCase> data;     
-            data = CasesCreator.Create(CsvReader.GetData(predictionChoice, typeof (StockExchangeListing)),
+            data = CasesCreator.Create(CsvReader.GetData(predictionChoice, GetTypeByPredictionChoice()),
                    windowLength, density, step).ToList();
             SetNeuronNetwork(neuronNetworkDto, data[0].Input.Count());
 
@@ -145,6 +145,16 @@ namespace MLP_Logic.Logic
             ResultDTO resultDto = SetResult(network.InputNumber, network.OutputNumber);
             resultDto.ErrorsPerIterations = errorsPerIterations;
             return resultDto;
+        }
+
+        private Type GetTypeByPredictionChoice()
+        {
+            if (predictionChoice == IndexName.WIG20)
+                return typeof (StockExchangeListing);
+            if (predictionChoice == IndexName.SP500)
+                return typeof(StockExchangeListingBase);
+
+            throw new ArgumentException("GetTypeByPredictionChoice");
         }
 
         private ResultDTO SetResult(int inputParams, int outputParams)
