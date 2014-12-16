@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MLP_Data.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -52,6 +53,9 @@ namespace MLP_Data.Entity
                 {
                     for (int i = 0; i < properties.Length; i++)
                     {
+                        if (Attribute.IsDefined(properties[i], typeof(OscilatorAttribute)) && item != _inputRawData.First())
+                            continue;
+
                         if (properties[i].PropertyType == typeof (double))
                         {
                             inputList.Add((double) properties[i].GetValue(item));

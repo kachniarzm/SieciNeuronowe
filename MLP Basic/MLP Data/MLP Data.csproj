@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\OscilatorAttribute.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="CsvReader.cs" />
     <Compile Include="CasesCreator.cs" />
