@@ -18,8 +18,10 @@ namespace MLP_Logic.Logic
         private double inertiaCoefficient;
         private double proportionalDivisionTrainingTestData;
 
-        private double maxFunctionValue;
-        private double minFunctionValue;
+        private List<double> maxInputValues;
+        private List<double> minInputValues;
+        private List<double> maxOutputValues;
+        private List<double> minOutputValues;
 
         private InputDataDateUnits step;
         private InputDataDateUnits windowLength;
@@ -68,29 +70,67 @@ namespace MLP_Logic.Logic
 
         private void FindMaxAndMinInSet()
         {
-            double maxParamOutput = double.MinValue;
-            double minParamOutput = double.MaxValue;
+            maxInputValues = new List<double>();
+            minInputValues = new List<double>();
 
-            for (int i = 0; i < trainingSet.Count(); i++)
+            for (int j = 0; j < trainingSet[0].Input.Length; j++)
             {
-                if (trainingSet[i].Output[0] > maxParamOutput)
-                    maxParamOutput = trainingSet[i].Output[0];
-                if (trainingSet[i].Output[0] < minParamOutput)
-                    minParamOutput = trainingSet[i].Output[0];
+                double currentMax = double.MinValue;
+                double currentMin = double.MaxValue;
+
+                for (int i = 0; i < trainingSet.Count(); i++)
+                {
+                    if (trainingSet[i].Input[j] > currentMax)
+                        currentMax = trainingSet[i].Input[j];
+                    if (trainingSet[i].Input[j] < currentMin)
+                        currentMin = trainingSet[i].Input[j];
+                }
+
+                for (int i = 0; i < testSet.Count(); i++)
+                {
+                    if (testSet[i].Input[j] > currentMax)
+                        currentMax = testSet[i].Input[j];
+                    if (testSet[i].Input[j] < currentMin)
+                        currentMin = testSet[i].Input[j];
+                }
+
+                if (currentMin >= currentMax)
+                    currentMax += 1;
+
+                maxInputValues.Add(currentMax);
+                minInputValues.Add(currentMin); 
             }
-            for (int i = 0; i < testSet.Count(); i++)
+
+            maxOutputValues = new List<double>();
+            minOutputValues = new List<double>();
+
+            for (int j = 0; j < trainingSet[0].Output.Length; j++)
             {
-                if (testSet[i].Output[0] > maxParamOutput)
-                    maxParamOutput = testSet[i].Output[0];
-                if (testSet[i].Output[0] < minParamOutput)
-                    minParamOutput = testSet[i].Output[0];
+                double currentMax = double.MinValue;
+                double currentMin = double.MaxValue;
+
+                for (int i = 0; i < trainingSet.Count(); i++)
+                {
+                    if (trainingSet[i].Output[j] > currentMax)
+                        currentMax = trainingSet[i].Output[j];
+                    if (trainingSet[i].Output[j] < currentMin)
+                        currentMin = trainingSet[i].Output[j];
+                }
+
+                for (int i = 0; i < testSet.Count(); i++)
+                {
+                    if (testSet[i].Output[j] > currentMax)
+                        currentMax = testSet[i].Output[j];
+                    if (testSet[i].Output[j] < currentMin)
+                        currentMin = testSet[i].Output[j];
+                }
+
+                if (currentMin >= currentMax)
+                    currentMax += 1;
+
+                maxOutputValues.Add(currentMax);
+                minOutputValues.Add(currentMin);
             }
-
-            maxFunctionValue = maxParamOutput * 2;
-
-            if (minParamOutput < 0)
-                throw new ArgumentException("Index has to be positive");
-            minFunctionValue = minParamOutput * 0.5;
         }
 
         public ResultDTO Run(NeuronNetworkDTO neuronNetworkDto)
@@ -124,8 +164,15 @@ namespace MLP_Logic.Logic
                     double[] predictedResult = trainingSet[currentTrainingIndex].Output;
                     double[] previousCaseResult = trainingSet[currentTrainingIndex].OutputInPreviousCase;
 
-                    double[] result = network.Calculate(arguments, predictedResult,
-                        learningCoefficient, inertiaCoefficient, minFunctionValue, maxFunctionValue);
+                    double[] result = network.Calculate(
+                        arguments,
+                        maxInputValues,
+                        minInputValues,
+                        maxOutputValues,
+                        minOutputValues,
+                        predictedResult,
+                        learningCoefficient,
+                        inertiaCoefficient);
 
                     double error = Math.Pow(result[0] - predictedResult[0], 2);
 
@@ -197,13 +244,29 @@ namespace MLP_Logic.Logic
                 for (int i = 0; i < trainingSet.Count; i++)
                 {
                     resultDto.NetworkPredictionCaseDay.Add(i);
-                    resultDto.NetworkPredictedValue.Add((network.Calculate(trainingSet[i].Input, null, learningCoefficient, inertiaCoefficient, minFunctionValue, maxFunctionValue))[0]);
+                    resultDto.NetworkPredictedValue.Add((network.Calculate(
+                        trainingSet[i].Input,
+                        maxInputValues,
+                        minInputValues,
+                        maxOutputValues,
+                        minOutputValues,
+                        null,
+                        learningCoefficient,
+                        inertiaCoefficient))[0]);
                 }
 
                 for (int i = 0; i < testSet.Count; i++)
                 {
                     resultDto.NetworkPredictionCaseDay.Add(trainingSet.Count + i);
-                    resultDto.NetworkPredictedValue.Add((network.Calculate(testSet[i].Input, null, learningCoefficient, inertiaCoefficient, minFunctionValue, maxFunctionValue))[0]);
+                    resultDto.NetworkPredictedValue.Add((network.Calculate(
+                        testSet[i].Input,
+                        maxInputValues,
+                        minInputValues,
+                        maxOutputValues,
+                        minOutputValues, 
+                        null,
+                        learningCoefficient,
+                        inertiaCoefficient))[0]);
                 }
 
             }

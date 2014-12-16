@@ -45,11 +45,18 @@ namespace MLP_Logic.Logic
             return Layer;
         }
 
-        public double[] Calculate(double[] arguments, double[] predictedResult = null, double learningCoefficient = 0.1, double inertia = 0.5,
-            double minFunctionValue = -1, double maxFunctionValue = 1)
+        public double[] Calculate(
+            double[] arguments,
+            List<double> maxInputValues,
+            List<double> minInputValues,
+            List<double> maxOutputValues,
+            List<double> minOutputValues,
+            double[] predictedResult = null,
+            double learningCoefficient = 0.1,
+            double inertia = 0.5)
         {
             double[] result = null;
-            var scaledArguments = ScaleFunctionValue(arguments, minFunctionValue, maxFunctionValue);
+            var scaledArguments = ScaleFunctionValue(arguments, minInputValues, maxInputValues);
 
             for (int i = 0; i < Layers.Count; i++)
             {
@@ -58,16 +65,16 @@ namespace MLP_Logic.Logic
             }
             if (predictedResult != null)
             {
-                double[] scaledPredictedValue = ScaleFunctionValue(predictedResult, minFunctionValue, maxFunctionValue);
+                double[] scaledPredictedValue = ScaleFunctionValue(predictedResult, minOutputValues, maxOutputValues);
                 BackPropagationLearningMethod.Run(Layers, scaledPredictedValue, learningCoefficient, inertia);
             }
 
-            double[] rescaledResult = RescaleFunctionValue(result, minFunctionValue, maxFunctionValue);
+            double[] rescaledResult = RescaleFunctionValue(result, minOutputValues, maxOutputValues);
 
             return rescaledResult;
         }
 
-        private double[] ScaleFunctionValue(double[] value, double minFunctionValue, double maxFunctionValue)
+        private double[] ScaleFunctionValue(double[] value, List<double> minFunctionValue, List<double> maxFunctionValue)
         {
             double newMin = IsUnipolar ? 0 : -1;
             double newMax = 1;
@@ -75,13 +82,13 @@ namespace MLP_Logic.Logic
             double[] scaledResult = new double[value.Length];
             for (int i = 0; i < value.Length; i++)
             {
-                scaledResult[i] = ((value[i] - minFunctionValue) / (maxFunctionValue - minFunctionValue)) * (newMax - newMin) + newMin;
+                scaledResult[i] = ((value[i] - minFunctionValue[i]) / (maxFunctionValue[i] - minFunctionValue[i])) * (newMax - newMin) + newMin;
             }
 
             return scaledResult;
         }
 
-        private double[] RescaleFunctionValue(double[] value, double minFunctionValue, double maxFunctionValue)
+        private double[] RescaleFunctionValue(double[] value, List<double> minFunctionValue, List<double> maxFunctionValue)
         {
             double oldMin = IsUnipolar ? 0 : -1;
             double oldMax = 1;
@@ -89,7 +96,7 @@ namespace MLP_Logic.Logic
             double[] rescaledResult = new double[value.Length];
             for (int i = 0; i < value.Length; i++)
             {
-                rescaledResult[i] = ((value[i] - oldMin) / (oldMax - oldMin)) * (maxFunctionValue - minFunctionValue) + minFunctionValue;
+                rescaledResult[i] = ((value[i] - oldMin) / (oldMax - oldMin)) * (maxFunctionValue[i] - minFunctionValue[i]) + minFunctionValue[i];
             }
 
             return rescaledResult;
