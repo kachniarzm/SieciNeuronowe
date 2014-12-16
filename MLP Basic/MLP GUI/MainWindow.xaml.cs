@@ -56,9 +56,19 @@ namespace MLP_GUI
                 }
 #endif
                 DrawChart(result);
+                FillPerformanceIndicators(result);
 
                 MessageBox.Show("Task completed", "Task completed", MessageBoxButton.OK);
             }
+        }
+
+        private void FillPerformanceIndicators(ResultDTO result)
+        {
+            MaxPredRateLabel.Content = result.MaxCorrectDirectionPredictionsRate.ToString("F4");
+            MinPredRateLabel.Content = result.MinCorrectDirectionPredictionsRate.ToString("F4");
+            FirstPredRateLabel.Content = result.FirstCorrectDirectionPredictionsRate.ToString("F4");
+            LastPredRateLabel.Content = result.LastCorrectDirectionPredictionsRate.ToString("F4");
+            AveragePredRateLabel.Content = result.AverageCorrectDirectionPredictionsRate.ToString("F4");
         }
 
         private void DrawChart(ResultDTO result)

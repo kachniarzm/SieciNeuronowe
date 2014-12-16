@@ -15,6 +15,12 @@ namespace MLP_Logic.DTO
 
         public List<double> ErrorsPerIterations;
 
+        public double MaxCorrectDirectionPredictionsRate;
+        public double MinCorrectDirectionPredictionsRate;
+        public double FirstCorrectDirectionPredictionsRate;
+        public double LastCorrectDirectionPredictionsRate;
+        public double AverageCorrectDirectionPredictionsRate;
+
         public ResultDTO()
         {
         }

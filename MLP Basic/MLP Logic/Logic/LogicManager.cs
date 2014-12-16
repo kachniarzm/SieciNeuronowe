@@ -144,7 +144,17 @@ namespace MLP_Logic.Logic
 
             ResultDTO resultDto = SetResult(network.InputNumber, network.OutputNumber);
             resultDto.ErrorsPerIterations = errorsPerIterations;
+            SetResultCorrectDirectionPredictionsRate(resultDto, correctDirectionPredictionsRateInIterations);
             return resultDto;
+        }
+
+        private void SetResultCorrectDirectionPredictionsRate(ResultDTO result, List<double> factors)
+        {
+            result.MaxCorrectDirectionPredictionsRate = factors.Max();
+            result.MinCorrectDirectionPredictionsRate = factors.Min();
+            result.AverageCorrectDirectionPredictionsRate = factors.Average();
+            result.FirstCorrectDirectionPredictionsRate = factors.First();
+            result.LastCorrectDirectionPredictionsRate = factors.Last();
         }
 
         private Type GetTypeByPredictionChoice()
