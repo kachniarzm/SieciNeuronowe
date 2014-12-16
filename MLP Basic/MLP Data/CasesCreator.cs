@@ -61,6 +61,7 @@ namespace MLP_Data
             if (predictionChoice == IndexName.SP500)
                 return typeof(StockExchangeListingBase);
             if (predictionChoice == IndexName.SinFunction
+                || predictionChoice == IndexName.LineFunction
                 || predictionChoice == IndexName.SecondFunction
                 || predictionChoice == IndexName.ThirdFunction
                 )
