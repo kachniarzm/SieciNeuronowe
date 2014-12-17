@@ -134,7 +134,7 @@ namespace MLP_Logic.Logic
             }
         }
 
-        public async Task<ResultDTO> Run(NeuronNetworkDTO neuronNetworkDto)
+        public async Task<ResultDTO> Run(NeuronNetworkDTO neuronNetworkDto, IProgress<int> progressFunction)
         {
             return await Task.Run(() =>
             {
@@ -160,6 +160,8 @@ namespace MLP_Logic.Logic
 
                 for (int currentIteration = 0; currentIteration < iterationNumber; currentIteration++)
                 {
+                    progressFunction.Report(currentIteration);
+
                     double errorInIteration = 0;
                     int correctDirectionPredictionsInIteration = 0;
 
@@ -212,8 +214,6 @@ namespace MLP_Logic.Logic
             result.FirstCorrectDirectionPredictionsRate = factors.First();
             result.LastCorrectDirectionPredictionsRate = factors.Last();
         }
-
-        
 
         private ResultDTO SetResult(int inputParams, int outputParams)
         {

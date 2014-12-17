@@ -36,7 +36,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <!--<ProgressBar MinWidth="400" Name="ProgresBarVal" Value="0" Maximum="100" Minimum="0"></ProgressBar>-->
+            <ProgressBar Visibility="Collapsed" Name="ProgressBar" Value="0" Maximum="100" Minimum="0"></ProgressBar>
             <oxy:Plot Grid.Row="1" x:Name="specialcasePlot" Model="{Binding SpecialCasePlotModel}" Title="Stock Index"></oxy:Plot>
             <oxy:Plot Grid.Row="2" x:Name="standardPlot" Model="{Binding StandardPlotModel}" Title="Error per iterations"></oxy:Plot>
         </Grid>  

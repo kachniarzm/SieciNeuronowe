@@ -35,7 +35,6 @@ namespace MLP_GUI
         private async void ButtonRun_Click(object sender, RoutedEventArgs e)
         {
             ((Button)sender).IsEnabled = false;
-            ((Button)sender).Content = "Calculating...";
             environmentDto = ValidateEnviorment();
             neuronNetworkDto = ValidateNeuronNetwork();
             if (environmentDto==null || neuronNetworkDto == null)
@@ -43,13 +42,20 @@ namespace MLP_GUI
             }
             else
             {
+                ((Button)sender).Content = "Calculating...";
+                ProgressBar.Visibility = Visibility.Visible;
+                ProgressBar.Value = 0;
+                ProgressBar.Maximum = environmentDto.IterationNumber;
+                IProgress<int> progressFunction = new Progress<int>(value => { ProgressBar.Value = value; });
+
                 ResultDTO result = null;
                 logicManager.SetEnviorment(environmentDto);
 #if !DEBUG
                 try
                 {
 #endif
-                    result = await logicManager.Run(neuronNetworkDto);
+
+                result = await logicManager.Run(neuronNetworkDto, progressFunction);
 
 #if !DEBUG
                 }
@@ -61,11 +67,12 @@ namespace MLP_GUI
                 DrawChart(result);
                 FillPerformanceIndicators(result);
 
+                ((Button)sender).Content = "Run";
+                ProgressBar.Visibility = Visibility.Collapsed;
                 MessageBox.Show("Task completed", "Task completed", MessageBoxButton.OK);
             }
 
-            ((Button)sender).IsEnabled = true;
-            ((Button)sender).Content = "Run";
+            ((Button)sender).IsEnabled = true; 
         }
 
         private void FillPerformanceIndicators(ResultDTO result)
