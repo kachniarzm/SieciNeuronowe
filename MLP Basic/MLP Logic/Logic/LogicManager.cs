@@ -5,6 +5,7 @@ using MLP_Logic.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using MLP_Logic.Enums;
 
 namespace MLP_Logic.Logic
@@ -133,66 +134,74 @@ namespace MLP_Logic.Logic
             }
         }
 
-        public ResultDTO Run(NeuronNetworkDTO neuronNetworkDto)
+        public async Task<ResultDTO> Run(NeuronNetworkDTO neuronNetworkDto)
         {
-            List<TestCase> data;     
-            data = CasesCreator.Create(CsvReader.GetData(predictionChoice, CasesCreator.GetTypeByPredictionChoice(predictionChoice)),
-                   windowLength, density, step).ToList();
-            SetNeuronNetwork(neuronNetworkDto, data[0].Input.Count());
-
-            var divisionSet = (int)(data.Count() * proportionalDivisionTrainingTestData / 100);
-            trainingSet = SetTrainingSet(data, divisionSet);
-            testSet = SetTestSet(data, divisionSet);
-            FindMaxAndMinInSet();
-
-            if (trainingSet.Count <= 0)
+            return await Task.Run(() =>
             {
-                throw new ArgumentException(String.Format("Training set contains no items."));
-            }
+                List<TestCase> data;
+                data =
+                    CasesCreator.Create(
+                        CsvReader.GetData(predictionChoice, CasesCreator.GetTypeByPredictionChoice(predictionChoice)),
+                        windowLength, density, step).ToList();
+                SetNeuronNetwork(neuronNetworkDto, data[0].Input.Count());
 
-            var errorsPerIterations = new List<double>();
-            var correctDirectionPredictionsRateInIterations = new List<double>();
+                var divisionSet = (int) (data.Count()*proportionalDivisionTrainingTestData/100);
+                trainingSet = SetTrainingSet(data, divisionSet);
+                testSet = SetTestSet(data, divisionSet);
+                FindMaxAndMinInSet();
 
-            for (int currentIteration = 0; currentIteration < iterationNumber; currentIteration++)
-            {
-                double errorInIteration = 0;
-                int correctDirectionPredictionsInIteration = 0;
-
-                for (int currentTrainingIndex = 0; currentTrainingIndex < trainingSet.Count(); currentTrainingIndex++)
+                if (trainingSet.Count <= 0)
                 {
-                    double[] arguments = trainingSet[currentTrainingIndex].Input;
-                    double[] predictedResult = trainingSet[currentTrainingIndex].Output;
-                    double[] previousCaseResult = trainingSet[currentTrainingIndex].OutputInPreviousCase;
-
-                    double[] result = network.Calculate(
-                        arguments,
-                        maxInputValues,
-                        minInputValues,
-                        maxOutputValues,
-                        minOutputValues,
-                        predictedResult,
-                        learningCoefficient,
-                        inertiaCoefficient);
-
-                    double error = Math.Pow(result[0] - predictedResult[0], 2);
-
-                    if ((result[0] - previousCaseResult[0]) * (predictedResult[0] - previousCaseResult[0]) > 0)
-                    {
-                        // Correct direction prediction
-                        correctDirectionPredictionsInIteration++;
-                    }
-
-                    errorInIteration += error;
+                    throw new ArgumentException(String.Format("Training set contains no items."));
                 }
 
-                errorsPerIterations.Add(errorInIteration / trainingSet.Count());
-                correctDirectionPredictionsRateInIterations.Add((double)correctDirectionPredictionsInIteration / trainingSet.Count());
-            }
+                var errorsPerIterations = new List<double>();
+                var correctDirectionPredictionsRateInIterations = new List<double>();
 
-            ResultDTO resultDto = SetResult(network.InputNumber, network.OutputNumber);
-            resultDto.ErrorsPerIterations = errorsPerIterations;
-            SetResultCorrectDirectionPredictionsRate(resultDto, correctDirectionPredictionsRateInIterations);
-            return resultDto;
+                for (int currentIteration = 0; currentIteration < iterationNumber; currentIteration++)
+                {
+                    double errorInIteration = 0;
+                    int correctDirectionPredictionsInIteration = 0;
+
+                    for (int currentTrainingIndex = 0;
+                        currentTrainingIndex < trainingSet.Count();
+                        currentTrainingIndex++)
+                    {
+                        double[] arguments = trainingSet[currentTrainingIndex].Input;
+                        double[] predictedResult = trainingSet[currentTrainingIndex].Output;
+                        double[] previousCaseResult = trainingSet[currentTrainingIndex].OutputInPreviousCase;
+
+                        double[] result = network.Calculate(
+                            arguments,
+                            maxInputValues,
+                            minInputValues,
+                            maxOutputValues,
+                            minOutputValues,
+                            predictedResult,
+                            learningCoefficient,
+                            inertiaCoefficient);
+
+                        double error = Math.Pow(result[0] - predictedResult[0], 2);
+
+                        if ((result[0] - previousCaseResult[0])*(predictedResult[0] - previousCaseResult[0]) > 0)
+                        {
+                            // Correct direction prediction
+                            correctDirectionPredictionsInIteration++;
+                        }
+
+                        errorInIteration += error;
+                    }
+
+                    errorsPerIterations.Add(errorInIteration/trainingSet.Count());
+                    correctDirectionPredictionsRateInIterations.Add((double) correctDirectionPredictionsInIteration/
+                                                                    trainingSet.Count());
+                }
+
+                ResultDTO resultDto = SetResult(network.InputNumber, network.OutputNumber);
+                resultDto.ErrorsPerIterations = errorsPerIterations;
+                SetResultCorrectDirectionPredictionsRate(resultDto, correctDirectionPredictionsRateInIterations);
+                return resultDto;
+            });
         }
 
         private void SetResultCorrectDirectionPredictionsRate(ResultDTO result, List<double> factors)

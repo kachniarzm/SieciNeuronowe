@@ -32,8 +32,10 @@ namespace MLP_GUI
             logicManager = new LogicManager();
         }
 
-        private void ButtonRun_Click(object sender, RoutedEventArgs e)
+        private async void ButtonRun_Click(object sender, RoutedEventArgs e)
         {
+            ((Button)sender).IsEnabled = false;
+            ((Button)sender).Content = "Calculating...";
             environmentDto = ValidateEnviorment();
             neuronNetworkDto = ValidateNeuronNetwork();
             if (environmentDto==null || neuronNetworkDto == null)
@@ -47,7 +49,7 @@ namespace MLP_GUI
                 try
                 {
 #endif
-                    result = logicManager.Run(neuronNetworkDto);
+                    result = await logicManager.Run(neuronNetworkDto);
 
 #if !DEBUG
                 }
@@ -61,6 +63,9 @@ namespace MLP_GUI
 
                 MessageBox.Show("Task completed", "Task completed", MessageBoxButton.OK);
             }
+
+            ((Button)sender).IsEnabled = true;
+            ((Button)sender).Content = "Run";
         }
 
         private void FillPerformanceIndicators(ResultDTO result)
