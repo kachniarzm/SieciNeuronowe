@@ -3,12 +3,17 @@
     public enum IndexName
     {
         Undefined,
+        
         WIG20,
         SP500,
+        
         TimeSeries,
+        
         SinFunction,
         LineFunction,
+
         SecondFunction,
-        ThirdFunction
+        ThirdFunction,
+        FourthFunction
     }
 }
