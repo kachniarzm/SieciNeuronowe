@@ -230,7 +230,7 @@ namespace MLP_GUI
                 linearAxis1.MaximumPadding = 0.1;
                 linearAxis1.MinimumPadding = 0.1;
                 linearAxis1.Position = AxisPosition.Bottom;
-                linearAxis1.Title = "Day";
+                linearAxis1.Title = "Step Unit";
                 viewModel.SpecialCasePlotModel.Axes.Add(linearAxis1);
 
                 var linearAxis2 = new LinearAxis();
