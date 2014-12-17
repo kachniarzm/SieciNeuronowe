@@ -36,7 +36,7 @@ namespace MLP_Logic.Logic
             switch (dto.NetworkType)
             {
                 case NeuronNetworkType.MLP:
-                    network = new MLPNeuronNetwork(dto.NeuronsInLayer, dto.IsBiased, dto.IsUnipolar,  -0.5, 0.5, inputLength);
+                    network = new MLPNeuronNetwork(dto.NeuronsInLayer, dto.IsBiased, dto.IsUnipolar, -0.5, 0.5, inputLength);
                     break;
                 case NeuronNetworkType.Jordan:
                     throw new NotImplementedException();
@@ -99,7 +99,7 @@ namespace MLP_Logic.Logic
                     currentMax += 1;
 
                 maxInputValues.Add(currentMax);
-                minInputValues.Add(currentMin); 
+                minInputValues.Add(currentMin);
             }
 
             maxOutputValues = new List<double>();
@@ -145,7 +145,7 @@ namespace MLP_Logic.Logic
                         windowLength, density, step).ToList();
                 SetNeuronNetwork(neuronNetworkDto, data[0].Input.Count());
 
-                var divisionSet = (int) (data.Count()*proportionalDivisionTrainingTestData/100);
+                var divisionSet = (int)(data.Count() * proportionalDivisionTrainingTestData / 100);
                 trainingSet = SetTrainingSet(data, divisionSet);
                 testSet = SetTestSet(data, divisionSet);
                 FindMaxAndMinInSet();
@@ -157,6 +157,10 @@ namespace MLP_Logic.Logic
 
                 var errorsPerIterations = new List<double>();
                 var correctDirectionPredictionsRateInIterations = new List<double>();
+                var correctUpPredictionsRateInIterations = new List<double>();
+                var correctDownPredictionsRateInIterations = new List<double>();
+                int totalUp = 0;
+                int totalDown = 0;
 
                 for (int currentIteration = 0; currentIteration < iterationNumber; currentIteration++)
                 {
@@ -164,6 +168,10 @@ namespace MLP_Logic.Logic
 
                     double errorInIteration = 0;
                     int correctDirectionPredictionsInIteration = 0;
+                    int correctUpPredictionsInIteration = 0;
+                    int correctDownPredictionsInIteration = 0;
+                    totalUp = 0;
+                    totalDown = 0;
 
                     for (int currentTrainingIndex = 0;
                         currentTrainingIndex < trainingSet.Count();
@@ -185,34 +193,60 @@ namespace MLP_Logic.Logic
 
                         double error = Math.Pow(result[0] - predictedResult[0], 2);
 
-                        if ((result[0] - previousCaseResult[0])*(predictedResult[0] - previousCaseResult[0]) > 0)
+                        if ((result[0] - previousCaseResult[0]) * (predictedResult[0] - previousCaseResult[0]) > 0)
                         {
                             // Correct direction prediction
                             correctDirectionPredictionsInIteration++;
+
+                            if (predictedResult[0] - previousCaseResult[0] > 0)
+                                correctUpPredictionsInIteration++;
+                            else
+                                correctDownPredictionsInIteration++;
                         }
+
+                        if (predictedResult[0] - previousCaseResult[0] > 0)
+                            totalUp++;
+                        else
+                            totalDown++;
 
                         errorInIteration += error;
                     }
 
-                    errorsPerIterations.Add(errorInIteration/trainingSet.Count());
-                    correctDirectionPredictionsRateInIterations.Add((double) correctDirectionPredictionsInIteration/
+                    errorsPerIterations.Add(errorInIteration / trainingSet.Count());
+                    correctDirectionPredictionsRateInIterations.Add((double)correctDirectionPredictionsInIteration /
                                                                     trainingSet.Count());
+                    correctUpPredictionsRateInIterations.Add((double)correctUpPredictionsInIteration /
+                                                                    totalUp);
+                    correctDownPredictionsRateInIterations.Add((double)correctDownPredictionsInIteration /
+                                                                    totalDown);
+
                 }
 
                 ResultDTO resultDto = SetResult(network.InputNumber, network.OutputNumber);
+                resultDto.TrainingCasesUpPercent = (double)totalUp / trainingSet.Count() * 100;
+                resultDto.TrainingCasesDownPercent = (double)totalDown / trainingSet.Count() * 100;
                 resultDto.ErrorsPerIterations = errorsPerIterations;
-                SetResultCorrectDirectionPredictionsRate(resultDto, correctDirectionPredictionsRateInIterations);
+                SetResultCorrectDirectionPredictionsRate(resultDto,
+                    correctDirectionPredictionsRateInIterations,
+                    correctUpPredictionsRateInIterations,
+                    correctDownPredictionsRateInIterations);
                 return resultDto;
             });
         }
 
-        private void SetResultCorrectDirectionPredictionsRate(ResultDTO result, List<double> factors)
+        private void SetResultCorrectDirectionPredictionsRate(ResultDTO result, List<double> factors, List<double> upFactors, List<double> downFactors)
         {
-            result.MaxCorrectDirectionPredictionsRate = factors.Max();
-            result.MinCorrectDirectionPredictionsRate = factors.Min();
-            result.AverageCorrectDirectionPredictionsRate = factors.Average();
-            result.FirstCorrectDirectionPredictionsRate = factors.First();
-            result.LastCorrectDirectionPredictionsRate = factors.Last();
+            result.MaxTrainingCorrectDirectionPredictionsRate = factors.Max();
+            result.MinTrainingCorrectDirectionPredictionsRate = factors.Min();
+            result.AverageTrainingCorrectDirectionPredictionsRate = factors.Average();
+            result.FirstTrainingCorrectDirectionPredictionsRate = factors.First();
+            result.LastTrainingCorrectDirectionPredictionsRate = factors.Last();
+
+            result.AverageTrainingCorrectUpPredictionsRate = upFactors.Average();
+            result.LastTrainingCorrectUpPredictionsRate = upFactors.Last();
+
+            result.AverageTrainingCorrectDownPredictionsRate = downFactors.Average();
+            result.LastTrainingCorrectDownPredictionsRate = downFactors.Last();
         }
 
         private ResultDTO SetResult(int inputParams, int outputParams)
@@ -256,19 +290,50 @@ namespace MLP_Logic.Logic
                         inertiaCoefficient))[0]);
                 }
 
+                int totalUp = 0;
+                int totalDown = 0;
+                int correctUpPred = 0;
+                int correctDownPred = 0;
+                int correctDirectionPred = 0;
+
                 for (int i = 0; i < testSet.Count; i++)
                 {
                     resultDto.NetworkPredictionCaseDay.Add(trainingSet.Count + i);
-                    resultDto.NetworkPredictedValue.Add((network.Calculate(
+                    double expetedResult = testSet[i].Output[0];
+                    double prevResult = testSet[i].OutputInPreviousCase[0];
+                    double networkResult = (network.Calculate(
                         testSet[i].Input,
                         maxInputValues,
                         minInputValues,
                         maxOutputValues,
-                        minOutputValues, 
+                        minOutputValues,
                         null,
                         learningCoefficient,
-                        inertiaCoefficient))[0]);
+                        inertiaCoefficient))[0];
+                    resultDto.NetworkPredictedValue.Add(networkResult);
+
+                    if (expetedResult - prevResult > 0)
+                    {
+                        totalUp++;
+                        if ((expetedResult - prevResult) * (networkResult - prevResult) > 0)
+                            correctUpPred++;
+                    }
+                    else
+                    {
+                        totalDown++;
+                        if ((expetedResult - prevResult) * (networkResult - prevResult) > 0)
+                            correctDownPred++;
+                    }
+
+                    if ((expetedResult - prevResult) * (networkResult - prevResult) > 0)
+                        correctDirectionPred++;
                 }
+
+                resultDto.TestCasesUpPercent = (double)totalUp / testSet.Count * 100;
+                resultDto.TestCasesDownPercent = (double)totalDown / testSet.Count * 100;
+                resultDto.TestCorrectUpPredictionsRate = (double)correctUpPred / totalUp;
+                resultDto.TestCorrectDownPredictionsRate = (double)correctDownPred / totalDown;
+                resultDto.TestCorrectDirectionPredictionsRate = (double)correctDirectionPred / testSet.Count;
 
             }
             return resultDto;

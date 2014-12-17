@@ -43,6 +43,7 @@ namespace MLP_GUI
             else
             {
                 ((Button)sender).Content = "Calculating...";
+                ResultLabel.Visibility = Visibility.Collapsed;
                 ProgressBar.Visibility = Visibility.Visible;
                 ProgressBar.Value = 0;
                 ProgressBar.Maximum = environmentDto.IterationNumber;
@@ -69,6 +70,7 @@ namespace MLP_GUI
 
                 ((Button)sender).Content = "Run";
                 ProgressBar.Visibility = Visibility.Collapsed;
+                ResultLabel.Visibility = Visibility.Visible;
                 MessageBox.Show("Task completed", "Task completed", MessageBoxButton.OK);
             }
 
@@ -77,11 +79,59 @@ namespace MLP_GUI
 
         private void FillPerformanceIndicators(ResultDTO result)
         {
-            FillLaxbel(MaxPredRateLabel, result.MaxCorrectDirectionPredictionsRate);
-            FillLaxbel(MinPredRateLabel, result.MinCorrectDirectionPredictionsRate);
-            FillLaxbel(FirstPredRateLabel, result.FirstCorrectDirectionPredictionsRate);
-            FillLaxbel(LastPredRateLabel, result.LastCorrectDirectionPredictionsRate);
-            FillLaxbel(AveragePredRateLabel, result.AverageCorrectDirectionPredictionsRate);
+            FillLaxbel(MaxTrainingDirectionsPredRateLabel, result.MaxTrainingCorrectDirectionPredictionsRate);
+            FillLaxbel(MinTrainingDirectionsPredRateLabel, result.MinTrainingCorrectDirectionPredictionsRate);
+            FillLaxbel(FirstTrainingDirectionsPredRateLabel, result.FirstTrainingCorrectDirectionPredictionsRate);
+            FillLaxbel(LastTrainingDirectionsPredRateLabel, result.LastTrainingCorrectDirectionPredictionsRate);
+            FillLaxbel(AverageTrainingDirectionsPredRateLabel, result.AverageTrainingCorrectDirectionPredictionsRate);
+
+            TrainingCasesUpPercentLabel.Content = String.Format("{0:F2}%", result.TrainingCasesUpPercent);
+            FillLaxbel(LastTrainingUpPredRateLabel, result.LastTrainingCorrectUpPredictionsRate);
+            FillLaxbel(AverageTrainingUpPredRateLabel, result.AverageTrainingCorrectUpPredictionsRate);
+
+            TrainingCasesDownPercentLabel.Content = String.Format("{0:F2}%", result.TrainingCasesDownPercent);
+            FillLaxbel(LastTrainingDownPredRateLabel, result.LastTrainingCorrectDownPredictionsRate);
+            FillLaxbel(AverageTrainingDownPredRateLabel, result.AverageTrainingCorrectDownPredictionsRate);
+
+            FillLaxbel(TestDirectionsPredRateLabel, result.TestCorrectDirectionPredictionsRate);
+
+            TestCasesUpPercentLabel.Content = String.Format("{0:F2}%", result.TestCasesUpPercent);
+            FillLaxbel(TestUpPredRateLabel, result.TestCorrectUpPredictionsRate);
+
+            TestCasesDownPercentLabel.Content = String.Format("{0:F2}%", result.TestCasesDownPercent);
+            FillLaxbel(TestDownPredRateLabel, result.TestCorrectDownPredictionsRate);
+
+            double trend = Math.Max(result.TestCasesDownPercent, result.TestCasesUpPercent) / 100;
+            if (result.TestCorrectDirectionPredictionsRate < 0.5)
+            {
+                ResultLabel.Foreground = new SolidColorBrush(Colors.Red);
+                ResultLabel.Content = String.Format("Very bad - Result ({0:F4}) less than 0,5",
+                    result.TestCorrectDirectionPredictionsRate);
+            }
+            else if (result.TestCorrectDirectionPredictionsRate < trend)
+            {
+                ResultLabel.Foreground = new SolidColorBrush(Colors.DarkOrange);
+                ResultLabel.Content = String.Format("Bad - Result ({0:F4}) less than trend ({1:F4})",
+                    result.TestCorrectDirectionPredictionsRate,
+                    trend);
+            }
+            else if (result.TestCorrectDirectionPredictionsRate - trend < 0.02)
+            {
+                ResultLabel.Foreground = new SolidColorBrush(Colors.LawnGreen);
+                ResultLabel.Content = String.Format("Can be - Result ({0:F4}) is {1:F4} more than trend ({2:F4})",
+                    result.TestCorrectDirectionPredictionsRate,
+                    result.TestCorrectDirectionPredictionsRate - trend,
+                    trend);
+            }
+            else
+            {
+                ResultLabel.Foreground = new SolidColorBrush(Colors.Green);
+                ResultLabel.Content = String.Format("Very good - Result ({0:F4}) is {1:F4} more than trend ({2:F4})",
+                    result.TestCorrectDirectionPredictionsRate,
+                    result.TestCorrectDirectionPredictionsRate - trend,
+                    trend);
+            }
+                
         }
 
         private void FillLaxbel(Label label, double number)
@@ -95,8 +145,10 @@ namespace MLP_GUI
                 label.Foreground = new SolidColorBrush(Colors.Yellow);
             else if (number < 0.575)
                 label.Foreground = new SolidColorBrush(Colors.LawnGreen);
-            else
+            else if (number <= 1)
                 label.Foreground = new SolidColorBrush(Colors.Green);
+            else
+                label.Foreground = new SolidColorBrush(Colors.Black);
         }
 
         private void DrawChart(ResultDTO result)

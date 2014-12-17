@@ -20,6 +20,11 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -30,12 +35,13 @@
             <ColumnDefinition Width="120"/>
             <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
-        <Grid Grid.Column="3" Grid.RowSpan="16" Margin="10">
+        <Grid Grid.Column="3" Grid.RowSpan="21" Margin="10">
             <Grid.RowDefinitions>
-                <RowDefinition Height="20"/>
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+            <Label FontWeight="Bold" FontSize="14" Name="ResultLabel"></Label>
             <ProgressBar Visibility="Collapsed" Name="ProgressBar" Value="0" Maximum="100" Minimum="0"></ProgressBar>
             <oxy:Plot Grid.Row="1" x:Name="specialcasePlot" Model="{Binding SpecialCasePlotModel}" Title="Stock Index"></oxy:Plot>
             <oxy:Plot Grid.Row="2" x:Name="standardPlot" Model="{Binding StandardPlotModel}" Title="Error per iterations"></oxy:Plot>
@@ -68,17 +74,52 @@
         <ComboBox Grid.Row="12" Grid.Column="1" Width="80" Height="20" SelectedItem="{Binding SelectedStep}" ItemsSource="{Binding StepValues}"/>
         <Label Grid.Row="13">NeuronNetworkType:</Label>
         <ComboBox Grid.Row="13" Grid.Column="1" Width="80" Height="20" SelectedItem="{Binding SelectedNeuronNetworkType}" ItemsSource="{Binding NeuronNetworkTypeValues}"/>
-        <Button Grid.Row="14" Grid.ColumnSpan="3"  Content="Run" Click="ButtonRun_Click" Width="100" HorizontalAlignment="Right" Margin="10" Height="20" VerticalAlignment="Top"></Button>
-        <Label Grid.Column="4" Grid.Row="0" FontWeight="Bold" FontSize="14">Results:</Label>
-        <Label Grid.Column="4" Grid.Row="1">Max pred rate:</Label>
-        <Label Grid.Column="4" Grid.Row="2">Min pred rate:</Label>
-        <Label Grid.Column="4" Grid.Row="3">First pred rate:</Label>
-        <Label Grid.Column="4" Grid.Row="4">Last pred rate:</Label>
-        <Label Grid.Column="4" Grid.Row="5">Average pred rate:</Label>
-        <Label Grid.Column="5" Grid.Row="1" FontWeight="Bold" Name="MaxPredRateLabel"></Label>
-        <Label Grid.Column="5" Grid.Row="2" FontWeight="Bold" Name="MinPredRateLabel"></Label>
-        <Label Grid.Column="5" Grid.Row="3" FontWeight="Bold" Name="FirstPredRateLabel"></Label>
-        <Label Grid.Column="5" Grid.Row="4" FontWeight="Bold" Name="LastPredRateLabel"></Label>
-        <Label Grid.Column="5" Grid.Row="5" FontWeight="Bold" Name="AveragePredRateLabel"></Label>
+        <Button Grid.Row="14" Grid.RowSpan="2" Grid.ColumnSpan="3"  Content="Run" Click="ButtonRun_Click" Width="100" HorizontalAlignment="Right" Margin="10" Height="20" VerticalAlignment="Top"></Button>
+        
+        <Label Grid.Column="4" Grid.Row="0" FontWeight="Bold" FontSize="14">Training Results:</Label>
+        
+        <Label Grid.Column="4" Grid.Row="1" FontWeight="Bold">Both directions</Label>
+        <Label Grid.Column="4" Grid.Row="2">Min pred. rate:</Label>
+        <Label Grid.Column="4" Grid.Row="3">First pred. rate:</Label>
+        <Label Grid.Column="4" Grid.Row="4">Average pred. rate:</Label>
+        <Label Grid.Column="4" Grid.Row="5">Last pred. rate:</Label>
+        <Label Grid.Column="4" Grid.Row="6">Max pred. rate:</Label>
+        <Label Grid.Column="5" Grid.Row="2" FontWeight="Bold" Name="MinTrainingDirectionsPredRateLabel"></Label>
+        <Label Grid.Column="5" Grid.Row="3" FontWeight="Bold" Name="FirstTrainingDirectionsPredRateLabel"></Label>
+        <Label Grid.Column="5" Grid.Row="4" FontWeight="Bold" Name="AverageTrainingDirectionsPredRateLabel"></Label>
+        <Label Grid.Column="5" Grid.Row="5" FontWeight="Bold" Name="LastTrainingDirectionsPredRateLabel"></Label>
+        <Label Grid.Column="5" Grid.Row="6" FontWeight="Bold" Name="MaxTrainingDirectionsPredRateLabel"></Label>
+
+        <Label Grid.Column="4" Grid.Row="7" FontWeight="Bold">Up direction</Label>
+        <Label Grid.Column="4" Grid.Row="8">Average pred. rate:</Label>
+        <Label Grid.Column="4" Grid.Row="9">Last pred. rate:</Label>
+        <Label Grid.Column="5" Grid.Row="7" FontWeight="Bold" Name="TrainingCasesUpPercentLabel"></Label>
+        <Label Grid.Column="5" Grid.Row="8" FontWeight="Bold" Name="AverageTrainingUpPredRateLabel"></Label>
+        <Label Grid.Column="5" Grid.Row="9" FontWeight="Bold" Name="LastTrainingUpPredRateLabel"></Label>
+
+        <Label Grid.Column="4" Grid.Row="10" FontWeight="Bold">Down direction</Label>
+        <Label Grid.Column="4" Grid.Row="11">Average pred. rate:</Label>
+        <Label Grid.Column="4" Grid.Row="12">Last pred. rate:</Label>
+        <Label Grid.Column="5" Grid.Row="10" FontWeight="Bold" Name="TrainingCasesDownPercentLabel"></Label>
+        <Label Grid.Column="5" Grid.Row="11" FontWeight="Bold" Name="AverageTrainingDownPredRateLabel"></Label>
+        <Label Grid.Column="5" Grid.Row="12" FontWeight="Bold" Name="LastTrainingDownPredRateLabel"></Label>
+
+        <Label Grid.Column="4" Grid.Row="14" FontWeight="Bold" FontSize="14">Test Results:</Label>
+
+        <Label Grid.Column="4" Grid.Row="15" FontWeight="Bold">Both directions</Label>
+        <Label Grid.Column="4" Grid.Row="16">Pred. rate:</Label>
+        <Label Grid.Column="5" Grid.Row="16" FontWeight="Bold" FontSize="14" Name="TestDirectionsPredRateLabel"></Label>
+
+        <Label Grid.Column="4" Grid.Row="17" FontWeight="Bold">Up direction</Label>
+        <Label Grid.Column="4" Grid.Row="18">Pred. rate:</Label>
+        <Label Grid.Column="5" Grid.Row="17" FontWeight="Bold" Name="TestCasesUpPercentLabel"></Label>
+        <Label Grid.Column="5" Grid.Row="18" FontWeight="Bold" FontSize="14" Name="TestUpPredRateLabel"></Label>
+
+        <Label Grid.Column="4" Grid.Row="19" FontWeight="Bold">Down direction</Label>
+        <Label Grid.Column="4" Grid.Row="20">Pred. rate:</Label>
+        <Label Grid.Column="5" Grid.Row="19" FontWeight="Bold" Name="TestCasesDownPercentLabel"></Label>
+        <Label Grid.Column="5" Grid.Row="20" FontWeight="Bold" FontSize="14" Name="TestDownPredRateLabel"></Label>
+
+
     </Grid>
 </Window>
