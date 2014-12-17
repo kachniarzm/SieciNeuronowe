@@ -49,6 +49,7 @@
     <Compile Include="Logic\Layer.cs" />
     <Compile Include="Logic\LogicManager.cs" />
     <Compile Include="Logic\Neuron.cs" />
+    <Compile Include="Logic\MLPNeuronNetwork.cs" />
     <Compile Include="Logic\NeuronNetwork.cs" />
     <Compile Include="Logic\SigmoidFunctions.cs" />
   </ItemGroup>

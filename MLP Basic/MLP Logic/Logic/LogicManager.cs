@@ -11,7 +11,7 @@ namespace MLP_Logic.Logic
 {
     public class LogicManager
     {
-        private NeuronNetwork network;
+        private MLPNeuronNetwork network;
 
         private int iterationNumber;
         private double learningCoefficient;
@@ -35,7 +35,7 @@ namespace MLP_Logic.Logic
             switch (dto.NetworkType)
             {
                 case NeuronNetworkType.MLP:
-                    network = new NeuronNetwork(dto.NeuronsInLayer, dto.IsBiased, dto.IsUnipolar,  -0.5, 0.5, inputLength);
+                    network = new MLPNeuronNetwork(dto.NeuronsInLayer, dto.IsBiased, dto.IsUnipolar,  -0.5, 0.5, inputLength);
                     break;
                 case NeuronNetworkType.Jordan:
                     throw new NotImplementedException();
