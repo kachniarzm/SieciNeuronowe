@@ -15,11 +15,10 @@ namespace MLP_Logic.Logic
         public bool IsUnipolar { get; protected set; }
         public double MinWeight { get; protected set; }
         public double MaxWeight { get; protected set; }
-        protected Random Random { get; set; }
 
         protected Layer CreateLayer(int neuronsInPrevLayer, int neuronsInThisLayer)
         {
-            Layer Layer = new Layer(neuronsInPrevLayer, neuronsInThisLayer, IsBiased, IsUnipolar, MinWeight, MaxWeight, Random);
+            Layer Layer = new Layer(neuronsInPrevLayer, neuronsInThisLayer, IsBiased, IsUnipolar, MinWeight, MaxWeight);
             return Layer;
         }
 

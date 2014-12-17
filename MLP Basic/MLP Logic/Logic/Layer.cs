@@ -13,7 +13,7 @@ namespace MLP_Logic.Logic
         private List<Neuron> neurons;
         private bool isBiased;
 
-        public Layer(int neuronsInPrevLayer, int neuronsInThisLayer, bool isBiased, bool isUnipolar, double minWeight, double maxWeight, Random random)
+        public Layer(int neuronsInPrevLayer, int neuronsInThisLayer, bool isBiased, bool isUnipolar, double minWeight, double maxWeight)
         {
             NeuronsInPrevLayer = neuronsInPrevLayer;
             NeuronsInThisLayer = neuronsInThisLayer;
@@ -22,7 +22,7 @@ namespace MLP_Logic.Logic
 
             for (int i = 0; i < neuronsInThisLayer; i++)
             {
-                Neuron neuron = new Neuron(neuronsInPrevLayer + ((isBiased) ? 1 : 0), isUnipolar, minWeight, maxWeight, random);
+                Neuron neuron = new Neuron(neuronsInPrevLayer + ((isBiased) ? 1 : 0), isUnipolar, minWeight, maxWeight);
                 neurons.Add(neuron);
             }
         }

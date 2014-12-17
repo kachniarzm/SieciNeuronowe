@@ -51,6 +51,7 @@
     <Compile Include="Logic\Neuron.cs" />
     <Compile Include="Logic\MLPNeuronNetwork.cs" />
     <Compile Include="Logic\NeuronNetwork.cs" />
+    <Compile Include="Logic\RandomGenerator.cs" />
     <Compile Include="Logic\SigmoidFunctions.cs" />
   </ItemGroup>
   <ItemGroup>

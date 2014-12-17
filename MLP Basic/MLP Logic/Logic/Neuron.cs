@@ -15,7 +15,7 @@ namespace MLP_Logic.Logic
         
         private readonly double[] weights;
 
-        private void SetWeights(Random random, double minWeight, double maxWeight)
+        private void SetWeights(double minWeight, double maxWeight)
         {
             if (weights.Count() == 0)
             {
@@ -23,14 +23,14 @@ namespace MLP_Logic.Logic
             }
             for (int i = 0; i < weights.Count(); i++)
             {
-                weights[i] = random.NextDouble() * (maxWeight - minWeight) + minWeight;
+                weights[i] = RandomGenerator.Random.NextDouble() * (maxWeight - minWeight) + minWeight;
             }
         }
 
-        public Neuron(int inputNumbers, bool isUnipolar, double minWeight, double maxWeight, Random random)
+        public Neuron(int inputNumbers, bool isUnipolar, double minWeight, double maxWeight)
         {
             weights = new double[inputNumbers];
-            SetWeights(random, minWeight, maxWeight);
+            SetWeights(minWeight, maxWeight);
             IsUnipolar = isUnipolar;
         }
 

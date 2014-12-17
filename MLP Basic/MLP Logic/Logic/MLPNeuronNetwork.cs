@@ -5,6 +5,8 @@ namespace MLP_Logic.Logic
 {
     public class MLPNeuronNetwork : NeuronNetwork
     {
+
+
         public MLPNeuronNetwork(List<int> neuronsInLayer, bool isBiased, bool isUnipolar, double minWeight, double maxWeight, int inputNumber)
         {
             Layers = new List<Layer>();
@@ -12,7 +14,6 @@ namespace MLP_Logic.Logic
             IsUnipolar = isUnipolar;
             MinWeight = minWeight;
             MaxWeight = maxWeight;
-            Random = new Random(Guid.NewGuid().GetHashCode());
             InputNumber = (neuronsInLayer.Count > 0) ? inputNumber : 0; //liczba wejść do neuronu w warstwie wejściowej
             OutputNumber = (neuronsInLayer.Count > 0) ? neuronsInLayer[neuronsInLayer.Count - 1] : 0;//liczba neuronów w warstwie wyjściowej
 
