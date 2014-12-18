@@ -295,8 +295,11 @@ namespace MLP_GUI
                 inertiaCoefficient.Text,
                 proportionalDivisionSlider.Value,
                 viewModel.SelectedIndexName,
-                 viewModel.SelectedStep, viewModel.SelectedDensity, viewModel.SelectedWindowLength
-                );
+                viewModel.SelectedStep, 
+                viewModel.SelectedDensity, 
+                viewModel.SelectedWindowLength,
+                usePca.IsChecked != null && (bool)usePca.IsChecked,
+                maxColumns.Text);
 
             if (!environment.IsValid)
             {
@@ -338,6 +341,13 @@ For example: 2;3;4 stands for two neurons in input layer, three in next one and 
         private void UpdateTitle()
         {
             Title = String.Format("MLP Basic by Kachniarz and Luśtyk {0}", DateTime.Now);
+        }
+
+        private void usePca_Click(object sender, RoutedEventArgs e)
+        {
+            if (maxColumns == null) return;
+
+            maxColumns.IsEnabled = usePca.IsChecked == true;
         }
     }
 }

@@ -48,20 +48,22 @@
         </Grid>  
         <Label>Network structure:</Label>
         <TextBox Grid.Column="1" Name="neuronStructure" Width="80" Height="20" Text="3;1"></TextBox>
-        <Button Grid.Column="2" Content="?" Width="20" Height="20" Click="ButtonHelp_Click" Tag="NeuronStructure"></Button>
+        <!--<Button Grid.Column="2" Content="?" Width="20" Height="20" Click="ButtonHelp_Click" Tag="NeuronStructure"></Button>-->
         <CheckBox Grid.Row="1" Grid.ColumnSpan="2" Content="Is unipolar (else bipolar)" Name="isUnipolar" Margin="5" IsChecked="True"></CheckBox>
-        <Button Grid.Row="1" Grid.Column="2" Content="?" Width="20" Height="20" Click="ButtonHelp_Click" Tag="IsUnipolar"></Button>
+        <!--<Button Grid.Row="1" Grid.Column="2" Content="?" Width="20" Height="20" Click="ButtonHelp_Click" Tag="IsUnipolar"></Button>-->
         <CheckBox Grid.Row="2" Grid.ColumnSpan="2" Content="Is biased" Name="isBiased" Margin="5" IsChecked="True"></CheckBox>
-        <Button Grid.Row="2" Grid.Column="2" Content="?" Width="20" Height="20" Click="ButtonHelp_Click" Tag="IsBiased"></Button>
+        <!--<Button Grid.Row="2" Grid.Column="2" Content="?" Width="20" Height="20" Click="ButtonHelp_Click" Tag="IsBiased"></Button>-->
+        <CheckBox Grid.Row="3" Grid.ColumnSpan="1" Content="Use PCA" Name="usePca" Margin="5" IsChecked="True" Click="usePca_Click" ></CheckBox>
+        <TextBox Grid.Row="3" Grid.Column="1" Name="maxColumns" Width="80" Height="20" Text="5"></TextBox>
         <Label Grid.Row="4">Iteration number:</Label>
         <TextBox Grid.Row="4" Grid.Column="1" Name="iterationNumber" Width="80" Height="20" Text="100"></TextBox>
-        <Button Grid.Row="4" Grid.Column="2" Content="?" Width="20" Height="20" Click="ButtonHelp_Click" Tag="IterationNumber"></Button>
+        <!--<Button Grid.Row="4" Grid.Column="2" Content="?" Width="20" Height="20" Click="ButtonHelp_Click" Tag="IterationNumber"></Button>-->
         <Label Grid.Row="5">Learning coefficient:</Label>
         <TextBox Grid.Row="5" Grid.Column="1" Name="learningCoefficient" Width="80" Height="20" Text="0,1"></TextBox>
-        <Button Grid.Row="5" Grid.Column="2" Content="?" Width="20" Height="20" Click="ButtonHelp_Click" Tag="LearningCoefficient"></Button>
+        <!--<Button Grid.Row="5" Grid.Column="2" Content="?" Width="20" Height="20" Click="ButtonHelp_Click" Tag="LearningCoefficient"></Button>-->
         <Label Grid.Row="6">Inertia coefficient:</Label>
         <TextBox Grid.Row="6" Grid.Column="1" Name="inertiaCoefficient" Width="80" Height="20" Text="0"></TextBox>
-        <Button Grid.Row="6" Grid.Column="2" Content="?" Width="20" Height="20" Click="ButtonHelp_Click" Tag="InertiaCoefficient"></Button>
+        <!--<Button Grid.Row="6" Grid.Column="2" Content="?" Width="20" Height="20" Click="ButtonHelp_Click" Tag="InertiaCoefficient"></Button>-->
         <Label Grid.Row="7">Index name:</Label>
         <ComboBox Grid.Row="7" Grid.Column="1" Width="80" Height="20" SelectedItem="{Binding SelectedIndexName}" ItemsSource="{Binding IndexNameValues}"/>
         <Label Grid.Row="8" Grid.ColumnSpan="2">Proportional division train and test set:</Label>

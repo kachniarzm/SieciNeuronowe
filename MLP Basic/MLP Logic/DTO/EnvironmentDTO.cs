@@ -12,10 +12,13 @@ namespace MLP_Logic.DTO
         public InputDataDateUnits Step { get; private set; }
         public InputDataDateUnits Density { get; private set; }
         public InputDataDateUnits WindowLength { get; private set; }
+        public int MaxInputColumns { get; private set; }
+        public bool UsePca { get; private set; }
 
         public EnvironmentDTO(string iterationNumber, string learningCoefficient, string inertiaCoefficient, double proportionalDivision, IndexName predictionChoice,
-            InputDataDateUnits step, InputDataDateUnits density, InputDataDateUnits windowLength)
+            InputDataDateUnits step, InputDataDateUnits density, InputDataDateUnits windowLength, bool usePca, string maxInputColumns)
         {
+            UsePca = usePca;
 
             int intValue;
             if (!int.TryParse(iterationNumber, out intValue))
@@ -25,6 +28,15 @@ namespace MLP_Logic.DTO
             else
             {
                 IterationNumber = intValue;
+            }
+
+            if (!int.TryParse(maxInputColumns, out intValue))
+            {
+                exceptions.Add("Max input column number invalid");
+            }
+            else
+            {
+                MaxInputColumns = intValue;
             }
 
             double value;

@@ -16,7 +16,7 @@ namespace MLP_Data
             InputDataDateUnits step = InputDataDateUnits.Day,
             bool formOldest = true,
             bool usePca = true,
-            int inputVectorMaxLenght = 3)
+            int inputVectorMaxLenght = 10)
         {
             if (collection == null) return null;
 
