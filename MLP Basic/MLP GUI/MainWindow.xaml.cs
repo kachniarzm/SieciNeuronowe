@@ -49,13 +49,14 @@ namespace MLP_GUI
                 ProgressBar.Maximum = environmentDto.IterationNumber;
                 IProgress<int> progressFunction = new Progress<int>(value => { ProgressBar.Value = value; });
 
+                ResultDTO result = null;
                 logicManager.SetEnviorment(environmentDto);
 #if !DEBUG
                 try
                 {
 #endif
 
-                ResultDTO result = await logicManager.Run(neuronNetworkDto, progressFunction);
+                result = await logicManager.Run(neuronNetworkDto, progressFunction);
 
 #if !DEBUG
                 }
