@@ -44,7 +44,7 @@ namespace MLP_Logic.Logic
             if (neuronsInLayer.Count - 2 >= 0)
             {
                 Layer outputLayer = CreateLayer(neuronsInLayer[neuronsInLayer.Count - 2],
-                    neuronsInLayer[neuronsInLayer.Count - 1], LayerType.HiddenLayer);
+                    neuronsInLayer[neuronsInLayer.Count - 1], LayerType.OutputLayer);
                 Layers.Add(outputLayer);
             }
             //-------------------------

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using MLP_Logic.Enums;
 
 namespace MLP_Logic.Logic
@@ -25,27 +21,34 @@ namespace MLP_Logic.Logic
             MaxWeight = maxWeight;
             OutputNumber = (neuronsInLayer.Count > 0) ? neuronsInLayer[neuronsInLayer.Count - 1] : 0;//liczba neuronów w warstwie wyjściowej
             InputNumber = (neuronsInLayer.Count > 0) ? inputNumber : 0; //liczba wejść do neuronu w warstwie wejściowej 
-            //TWORZENIE WARSTWY WEJŚCIOWEJ
-            Layer inputLayer = CreateLayer(InputNumber,neuronsInLayer[0], LayerType.InputLayer);
-            Layers.Add(inputLayer);
-            //-------------------------
-
-            for (int i = 1; i < neuronsInLayer.Count-1; i++)
-            {
-                //TWORZENIE WARSTW UKRYTYCH
-                Layer layer = CreateLayer(neuronsInLayer[i - 1] + neuronsInLayer[i], neuronsInLayer[i], LayerType.HiddenLayer);
-                Layers.Add(layer);
-                //TWORZENIE WARSTWY KONTEKSTOWEJ
-                ContextLayers.Add(CreateLayer(neuronsInLayer[i], neuronsInLayer[i], LayerType.ContextLayer)); 
-            }
+            
             if (neuronsInLayer.Count - 2 >= 0)
             {
                 //TWORZENIE WARSTWY WYJŚCIOWEJ
                 Layer outputLayer = CreateLayer(neuronsInLayer[neuronsInLayer.Count - 2],
-                    neuronsInLayer[neuronsInLayer.Count - 1], LayerType.HiddenLayer);
+                    neuronsInLayer[neuronsInLayer.Count - 1], LayerType.OutputLayer);
                 Layers.Add(outputLayer);
+
+                for (int i = neuronsInLayer.Count - 2; i >=1; i--)
+                {
+                    //TWORZENIE WARSTW UKRYTYCH
+                    Layer layer = CreateLayer(neuronsInLayer[i - 1] + neuronsInLayer[i], neuronsInLayer[i], LayerType.HiddenLayer);
+                    Layers.Add(layer);
+                    //TWORZENIE WARSTWY KONTEKSTOWEJ
+                    ContextLayers.Add(CreateLayer(neuronsInLayer[i], neuronsInLayer[i], LayerType.ContextLayer));
+                }
             }
-       
+
+            //TWORZENIE WARSTWY WEJŚCIOWEJ
+            Layer inputLayer = CreateLayer(InputNumber + neuronsInLayer[0],neuronsInLayer[0], LayerType.InputLayer);
+            Layers.Add(inputLayer);
+            //TWORZENIE JESZCZE JEDNEJ WARSTWY KONTEKSTOWEJ
+            ContextLayers.Add(CreateLayer(neuronsInLayer[0], neuronsInLayer[0], LayerType.ContextLayer));
+            //-------------------------
+
+            //ODWRÓCENIE KOLEJNOŚCI, ABY NA POCZĄTKU BYŁA WARSTWA WEJŚCIOWA A NA KOŃCU WYJŚCIOWA
+            Layers.Reverse();
+            ContextLayers.Reverse();
         }
     }
 }

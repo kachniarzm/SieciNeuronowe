@@ -39,11 +39,11 @@ namespace MLP_Logic.Logic
                     network = new MLPNeuronNetwork(dto.NeuronsInLayer, dto.IsBiased, dto.IsUnipolar, -0.5, 0.5, inputLength);
                     break;
                 case NeuronNetworkType.Jordan:
-                    network = new JordanNeuronNetwork(dto.NeuronsInLayer, dto.IsBiased, dto.IsUnipolar, -0.5, 0.5,
-                        inputLength);
+                    network = new JordanNeuronNetwork(dto.NeuronsInLayer, dto.IsBiased, dto.IsUnipolar, -0.5, 0.5, inputLength);
                     break;
                 case NeuronNetworkType.Elman:
-                    throw new NotImplementedException();
+                    network = new ElmanNeuronNetwork(dto.NeuronsInLayer, dto.IsBiased, dto.IsUnipolar, -0.5, 0.5, inputLength);
+                    break;
                 case NeuronNetworkType.Undefined:
                     throw new ArgumentException("Network structure: NeuronNetworkType is Undefined");
             }
