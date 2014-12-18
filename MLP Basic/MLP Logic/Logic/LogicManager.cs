@@ -103,7 +103,13 @@ namespace MLP_Logic.Logic
                     if (testSet[i].Input[j] < currentMin)
                         currentMin = testSet[i].Input[j];
                 }
-
+                for (int i = 0; i < validationSet.Count(); i++)
+                {
+                    if (validationSet[i].Input[j] > currentMax)
+                        currentMax = validationSet[i].Input[j];
+                    if (validationSet[i].Input[j] < currentMin)
+                        currentMin = validationSet[i].Input[j];
+                }
                 if (currentMin >= currentMax)
                     currentMax += 1;
 
@@ -162,7 +168,7 @@ namespace MLP_Logic.Logic
                 trainingSet = SetTrainingSet(data, elementsInTrainingSet);
                 testSet = SetTestSet(data, elementsInTestSet, 1 - percentValidationSet);
                 validationSet = SetValidationSet(data, elementsInValidationSet);
-               
+
                 FindMaxAndMinInSet();
 
                 if (trainingSet.Count <= 0)
@@ -171,6 +177,7 @@ namespace MLP_Logic.Logic
                 }
 
                 var errorsPerIterations = new List<double>();
+                var errorsPerIterationsInValidationSet = new List<double>();
                 var correctDirectionPredictionsRateInIterations = new List<double>();
                 var correctUpPredictionsRateInIterations = new List<double>();
                 var correctDownPredictionsRateInIterations = new List<double>();
@@ -182,6 +189,7 @@ namespace MLP_Logic.Logic
                     progressFunction.Report(currentIteration);
 
                     double errorInIteration = 0;
+                    double errorInIterationInValidationSet = 0;
                     int correctDirectionPredictionsInIteration = 0;
                     int correctUpPredictionsInIteration = 0;
                     int correctDownPredictionsInIteration = 0;
@@ -235,12 +243,47 @@ namespace MLP_Logic.Logic
                     correctDownPredictionsRateInIterations.Add((double)correctDownPredictionsInIteration /
                                                                     totalDown);
 
+                    //Walidacja na zbiorze walidacyjnym
+                    for (int currentValidatingIndex = 0;
+                        currentValidatingIndex < validationSet.Count();
+                        currentValidatingIndex++)
+                    {
+                        double[] arguments = validationSet[currentValidatingIndex].Input;
+                        double[] predictedResult = validationSet[currentValidatingIndex].Output;
+
+                        double[] result = network.Calculate(
+                            arguments,
+                            maxInputValues,
+                            minInputValues,
+                            maxOutputValues,
+                            minOutputValues,
+                            null,
+                            learningCoefficient,
+                            inertiaCoefficient);
+
+                        double error = Math.Pow(result[0] - predictedResult[0], 2);
+                        errorInIterationInValidationSet += error;
+                    }
+                    errorsPerIterationsInValidationSet.Add(errorInIterationInValidationSet / validationSet.Count());
+
+                    var elemCountInErrorsList = errorsPerIterationsInValidationSet.Count();
+                    if (elemCountInErrorsList > 100)
+                    {
+                      if(errorsPerIterationsInValidationSet.ElementAt(elemCountInErrorsList-1)-errorsPerIterationsInValidationSet.ElementAt(elemCountInErrorsList-2)>0
+                         && errorsPerIterationsInValidationSet.ElementAt(elemCountInErrorsList-2)-errorsPerIterationsInValidationSet.ElementAt(elemCountInErrorsList-3)>0
+                         && errorsPerIterationsInValidationSet.ElementAt(elemCountInErrorsList-3)-errorsPerIterationsInValidationSet.ElementAt(elemCountInErrorsList-4)>0)
+                      {
+                          //TODO - za szybko wychodzimy z pętli (inny warunek?)
+                          //break;
+                      }
+                    }
                 }
 
                 ResultDTO resultDto = SetResult(network.InputNumber, network.OutputNumber);
                 resultDto.TrainingCasesUpPercent = (double)totalUp / trainingSet.Count() * 100;
                 resultDto.TrainingCasesDownPercent = (double)totalDown / trainingSet.Count() * 100;
                 resultDto.ErrorsPerIterations = errorsPerIterations;
+                resultDto.ErrorsPerIterationsInValidationSet = errorsPerIterationsInValidationSet;
                 SetResultCorrectDirectionPredictionsRate(resultDto,
                     correctDirectionPredictionsRateInIterations,
                     correctUpPredictionsRateInIterations,

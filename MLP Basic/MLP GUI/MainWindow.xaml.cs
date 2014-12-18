@@ -225,6 +225,19 @@ namespace MLP_GUI
                 }
                 viewModel.StandardPlotModel.Series.Add(lineSeries3);
 
+                var lineSeries4 = new LineSeries
+                {
+                    LineStyle = LineStyle.Solid,
+                    MarkerType = MarkerType.None,
+                    Title = "Validation set error"
+                };
+
+                for (int i = 0; i < result.ErrorsPerIterationsInValidationSet.Count; i++)
+                {
+                    lineSeries4.Points.Add(new DataPoint(i + 1, result.ErrorsPerIterationsInValidationSet[i]));
+                }
+                viewModel.StandardPlotModel.Series.Add(lineSeries4);
+
                 var linearAxis1 = new LinearAxis
                 {
                     Minimum = 0,

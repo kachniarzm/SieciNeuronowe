@@ -7,13 +7,18 @@ namespace MLP_Logic.DTO
         public List<double> TestCaseDay;
         public List<double> TestCaseValue;
 
+
         public List<double> TrainingCaseDay;
-        public List<double> TrainingCaseValue;
+        public List<double> TrainingCaseValue; 
+        
+        public List<double> ValidationCaseDay;
+        public List<double> ValidationCaseValue;
 
         public List<double> NetworkPredictionCaseDay;
         public List<double> NetworkPredictedValue;
 
         public List<double> ErrorsPerIterations;
+        public List<double> ErrorsPerIterationsInValidationSet;
 
         public double LastTrainingCorrectUpPredictionsRate;
         public double AverageTrainingCorrectUpPredictionsRate;
