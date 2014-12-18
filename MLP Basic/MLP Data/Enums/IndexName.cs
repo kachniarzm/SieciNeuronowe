@@ -8,7 +8,10 @@
         SP500,
         WIG20Closing,
         
-        TimeSeries,
+        TimeSeriesGaussMap,
+        TimeSeriesLogisticMap,
+        TimeSeriesSineMap,
+        TimeSeriesTentMap,
         
         SinFunction,
         LineFunction,
