@@ -7,7 +7,6 @@ namespace MLP_Logic.DTO
         public List<double> TestCaseDay;
         public List<double> TestCaseValue;
 
-
         public List<double> TrainingCaseDay;
         public List<double> TrainingCaseValue; 
         
@@ -41,6 +40,8 @@ namespace MLP_Logic.DTO
 
         public double TestCasesUpPercent;
         public double TestCasesDownPercent;
+
+        public int InputColumns;
 
         public ResultDTO()
         {

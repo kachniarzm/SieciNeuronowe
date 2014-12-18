@@ -284,6 +284,7 @@ namespace MLP_Logic.Logic
                 }
 
                 ResultDTO resultDto = SetResult(network.InputNumber, network.OutputNumber);
+                resultDto.InputColumns = trainingSet[0].Input.Length;
                 resultDto.TrainingCasesUpPercent = (double)totalUp / trainingSet.Count() * 100;
                 resultDto.TrainingCasesDownPercent = (double)totalDown / trainingSet.Count() * 100;
                 resultDto.ErrorsPerIterations = errorsPerIterations;

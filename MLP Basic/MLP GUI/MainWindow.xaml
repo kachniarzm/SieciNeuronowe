@@ -25,6 +25,8 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="20"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -35,7 +37,7 @@
             <ColumnDefinition Width="120"/>
             <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
-        <Grid Grid.Column="3" Grid.RowSpan="21" Margin="10">
+        <Grid Grid.Column="3" Grid.RowSpan="23" Margin="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
@@ -122,6 +124,8 @@
         <Label Grid.Column="5" Grid.Row="19" FontWeight="Bold" Name="TestCasesDownPercentLabel"></Label>
         <Label Grid.Column="5" Grid.Row="20" FontWeight="Bold" FontSize="14" Name="TestDownPredRateLabel"></Label>
 
+        <Label Grid.Column="4" Grid.Row="22">Input columns:</Label>
+        <Label Grid.Column="5" Grid.Row="22" Name="InputColumnsNumber"></Label>
 
     </Grid>
 </Window>

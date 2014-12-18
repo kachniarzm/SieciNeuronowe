@@ -101,6 +101,8 @@ namespace MLP_GUI
             TestCasesDownPercentLabel.Content = String.Format("{0:F2}%", result.TestCasesDownPercent);
             FillLaxbel(TestDownPredRateLabel, result.TestCorrectDownPredictionsRate);
 
+            InputColumnsNumber.Content = result.InputColumns;
+
             double trend = Math.Max(result.TestCasesDownPercent, result.TestCasesUpPercent) / 100;
             if (result.TestCorrectDirectionPredictionsRate < 0.5)
             {
