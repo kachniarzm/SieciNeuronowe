@@ -29,6 +29,7 @@ namespace MLP_Logic.Logic
         private InputDataDateUnits density;
         private IndexName predictionChoice;
         private List<TestCase> trainingSet;
+        private List<TestCase> validationSet;
         private List<TestCase> testSet;
 
         public void SetNeuronNetwork(NeuronNetworkDTO dto, int inputLength)
@@ -61,14 +62,20 @@ namespace MLP_Logic.Logic
             predictionChoice = dto.PredictionChoice;
         }
 
-        private List<TestCase> SetTrainingSet(List<TestCase> data, int division)
+        private List<TestCase> SetTrainingSet(List<TestCase> data, int count)
         {
-            return data.GetRange(0, division);
+            return data.GetRange(0, count);
         }
 
-        private List<TestCase> SetTestSet(List<TestCase> data, int division)
+        private List<TestCase> SetValidationSet(List<TestCase> data, int count)
         {
-            return data.GetRange(division, data.Count - division);
+            return data.GetRange(data.Count - count, count);
+        }
+
+        private List<TestCase> SetTestSet(List<TestCase> data, int count, double percentOfSet)
+        {
+            int testSetCount = (int)(percentOfSet * count);
+            return data.GetRange(data.Count - count, testSetCount);
         }
 
         private void FindMaxAndMinInSet()
@@ -148,9 +155,14 @@ namespace MLP_Logic.Logic
                     windowLength, density, step).ToList();
                 SetNeuronNetwork(neuronNetworkDto, data[0].Input.Count());
 
-                var divisionSet = (int)(data.Count() * proportionalDivisionTrainingTestData / 100);
-                trainingSet = SetTrainingSet(data, divisionSet);
-                testSet = SetTestSet(data, divisionSet);
+                var percentValidationSet = 0.1;
+                var elementsInTrainingSet = (int)(data.Count() * proportionalDivisionTrainingTestData / 100);
+                var elementsInTestSet = data.Count - elementsInTrainingSet;
+                var elementsInValidationSet = (int)(elementsInTestSet * percentValidationSet);
+                trainingSet = SetTrainingSet(data, elementsInTrainingSet);
+                testSet = SetTestSet(data, elementsInTestSet, 1 - percentValidationSet);
+                validationSet = SetValidationSet(data, elementsInValidationSet);
+               
                 FindMaxAndMinInSet();
 
                 if (trainingSet.Count <= 0)
@@ -236,6 +248,7 @@ namespace MLP_Logic.Logic
                 return resultDto;
             });
         }
+
 
         private void SetResultCorrectDirectionPredictionsRate(ResultDTO result, List<double> factors, List<double> upFactors, List<double> downFactors)
         {

@@ -28,8 +28,12 @@ namespace MLP_Logic.Logic
                 Layer layer = CreateLayer(neuronsInLayer[i - 1], neuronsInLayer[i], LayerType.HiddenLayer);
                 Layers.Add(layer);
             }
-            Layer outputLayer = CreateLayer(neuronsInLayer[neuronsInLayer.Count - 2], neuronsInLayer[neuronsInLayer.Count - 1], LayerType.OutputLayer);
-            Layers.Add(outputLayer);
+            if (neuronsInLayer.Count - 2 >= 0)
+            {
+                Layer outputLayer = CreateLayer(neuronsInLayer[neuronsInLayer.Count - 2],
+                    neuronsInLayer[neuronsInLayer.Count - 1], LayerType.OutputLayer);
+                Layers.Add(outputLayer);
+            }
         }
 
          public override double[] Calculate(
