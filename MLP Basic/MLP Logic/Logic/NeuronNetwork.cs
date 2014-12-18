@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MLP_Logic.Enums;
 
 namespace MLP_Logic.Logic
@@ -19,23 +16,16 @@ namespace MLP_Logic.Logic
 
         protected Layer CreateLayer(int neuronsInPrevLayer, int neuronsInThisLayer, LayerType layerType = LayerType.Undefined)
         {
-            Layer layer;
-            if (layerType == LayerType.ContextLayer)
-            {
-                layer = new Layer(neuronsInPrevLayer, neuronsInThisLayer, false, IsUnipolar, MinWeight, MaxWeight, layerType);
-            }
-            else
-            {
-                layer = new Layer(neuronsInPrevLayer, neuronsInThisLayer, IsBiased, IsUnipolar, MinWeight, MaxWeight, layerType);
-            }
+            Layer layer = layerType == LayerType.ContextLayer ? new Layer(neuronsInPrevLayer, neuronsInThisLayer, false, IsUnipolar, MinWeight, MaxWeight, layerType) 
+                : new Layer(neuronsInPrevLayer, neuronsInThisLayer, IsBiased, IsUnipolar, MinWeight, MaxWeight, layerType);
             return layer;
         }
 
         protected double[] ScaleFunctionValue(double[] value, List<double> minFunctionValue, List<double> maxFunctionValue)
         {
             double newMin = IsUnipolar ? 0 : -1;
-            double newMax = 1;
-            double[] scaledResult = new double[value.Length];
+            const double newMax = 1;
+            var scaledResult = new double[value.Length];
             for (int i = 0; i < value.Length; i++)
             {
                 scaledResult[i] = ((value[i] - minFunctionValue[i]) / (maxFunctionValue[i] - minFunctionValue[i])) * (newMax - newMin) + newMin;
@@ -46,8 +36,8 @@ namespace MLP_Logic.Logic
         protected double[] RescaleFunctionValue(double[] value, List<double> minFunctionValue, List<double> maxFunctionValue)
         {
             double oldMin = IsUnipolar ? 0 : -1;
-            double oldMax = 1;
-            double[] rescaledResult = new double[value.Length];
+            const double oldMax = 1;
+            var rescaledResult = new double[value.Length];
             for (int i = 0; i < value.Length; i++)
             {
                 rescaledResult[i] = ((value[i] - oldMin) / (oldMax - oldMin)) * (maxFunctionValue[i] - minFunctionValue[i]) + minFunctionValue[i];

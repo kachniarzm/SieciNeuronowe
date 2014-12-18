@@ -32,7 +32,7 @@ namespace MLP_Logic.Logic
         {
             weights = new double[inputNumbers];
             OutputValue = 0;
-            if (isContextLayer == true)
+            if (isContextLayer)
             {
                 weights[0] = 1;
                 weights[1] = 0.5;
@@ -56,10 +56,7 @@ namespace MLP_Logic.Logic
             {
                 if (neuronNumberInLayer < 0 || nextLayer == null) throw new ArgumentException("Wrong parameters in neuron.CalculateError");
 
-                foreach (Neuron neuronInNextLayer in nextLayer.Neurons)
-                {
-                    newError += neuronInNextLayer.Error * neuronInNextLayer[neuronNumberInLayer];
-                }
+                newError += nextLayer.Neurons.Sum(neuronInNextLayer => neuronInNextLayer.Error*neuronInNextLayer[neuronNumberInLayer]);
             }
             DeltaError = newError - Error;
             Error = newError;

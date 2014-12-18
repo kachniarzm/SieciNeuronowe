@@ -143,11 +143,9 @@ namespace MLP_Logic.Logic
         {
             return await Task.Run(() =>
             {
-                List<TestCase> data;
-                data =
-                    CasesCreator.Create(
-                        CsvReader.GetData(predictionChoice, CasesCreator.GetTypeByPredictionChoice(predictionChoice)),
-                        windowLength, density, step).ToList();
+                List<TestCase> data = CasesCreator.Create(
+                    CsvReader.GetData(predictionChoice, CasesCreator.GetTypeByPredictionChoice(predictionChoice)),
+                    windowLength, density, step).ToList();
                 SetNeuronNetwork(neuronNetworkDto, data[0].Input.Count());
 
                 var divisionSet = (int)(data.Count() * proportionalDivisionTrainingTestData / 100);

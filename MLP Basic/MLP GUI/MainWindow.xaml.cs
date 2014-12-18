@@ -49,14 +49,13 @@ namespace MLP_GUI
                 ProgressBar.Maximum = environmentDto.IterationNumber;
                 IProgress<int> progressFunction = new Progress<int>(value => { ProgressBar.Value = value; });
 
-                ResultDTO result = null;
                 logicManager.SetEnviorment(environmentDto);
 #if !DEBUG
                 try
                 {
 #endif
 
-                result = await logicManager.Run(neuronNetworkDto, progressFunction);
+                ResultDTO result = await logicManager.Run(neuronNetworkDto, progressFunction);
 
 #if !DEBUG
                 }
@@ -225,30 +224,30 @@ namespace MLP_GUI
                 }
                 viewModel.StandardPlotModel.Series.Add(lineSeries3);
 
-                var linearAxis1 = new LinearAxis();
-                linearAxis1.Minimum = 0;
-                linearAxis1.MaximumPadding = 0.1;
-                linearAxis1.MinimumPadding = 0.1;
-                linearAxis1.Position = AxisPosition.Bottom;
-                linearAxis1.Title = "Step Unit";
+                var linearAxis1 = new LinearAxis
+                {
+                    Minimum = 0,
+                    MaximumPadding = 0.1,
+                    MinimumPadding = 0.1,
+                    Position = AxisPosition.Bottom,
+                    Title = "Step Unit"
+                };
                 viewModel.SpecialCasePlotModel.Axes.Add(linearAxis1);
 
-                var linearAxis2 = new LinearAxis();
-                linearAxis2.Minimum = 0;
-                linearAxis2.Title = "Index Value";
+                var linearAxis2 = new LinearAxis {Minimum = 0, Title = "Index Value"};
                 viewModel.SpecialCasePlotModel.Axes.Add(linearAxis2);
 
-                var linearAxis3 = new LinearAxis();
-                linearAxis3.Minimum = 1;
-                linearAxis3.MaximumPadding = 0.1;
-                linearAxis3.MinimumPadding = 0.1;
-                linearAxis3.Position = AxisPosition.Bottom;
-                linearAxis3.Title = "Iteration";
+                var linearAxis3 = new LinearAxis
+                {
+                    Minimum = 1,
+                    MaximumPadding = 0.1,
+                    MinimumPadding = 0.1,
+                    Position = AxisPosition.Bottom,
+                    Title = "Iteration"
+                };
                 viewModel.StandardPlotModel.Axes.Add(linearAxis3);
 
-                var linearAxis4 = new LinearAxis();
-                linearAxis4.Minimum = 0;
-                linearAxis4.Title = "Error";
+                var linearAxis4 = new LinearAxis {Minimum = 0, Title = "Error"};
                 viewModel.StandardPlotModel.Axes.Add(linearAxis4);
             }
 
@@ -259,7 +258,7 @@ namespace MLP_GUI
 
         private NeuronNetworkDTO ValidateNeuronNetwork()
         {
-            NeuronNetworkDTO neuronNetwork = new NeuronNetworkDTO(
+            var neuronNetwork = new NeuronNetworkDTO(
               neuronStructure.Text,
               isUnipolar.IsChecked != null && (bool)isUnipolar.IsChecked,
               isBiased.IsChecked != null && (bool)isBiased.IsChecked,
@@ -276,13 +275,13 @@ namespace MLP_GUI
 
         private EnvironmentDTO ValidateEnviorment()
         {
-            EnvironmentDTO environment = new EnvironmentDTO(
+            var environment = new EnvironmentDTO(
                 iterationNumber.Text,
                 learningCoefficient.Text,
                 inertiaCoefficient.Text,
                 proportionalDivisionSlider.Value,
                 viewModel.SelectedIndexName,
-                 viewModel.SelectedStep, density: viewModel.SelectedDensity, windowLength: viewModel.SelectedWindowLength
+                 viewModel.SelectedStep, viewModel.SelectedDensity, viewModel.SelectedWindowLength
                 );
 
             if (!environment.IsValid)

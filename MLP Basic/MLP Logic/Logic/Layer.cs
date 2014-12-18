@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using MLP_Logic.Enums;
 
@@ -11,9 +10,8 @@ namespace MLP_Logic.Logic
         public int NeuronsInThisLayer { get; private set; }
         public List<Neuron> Neurons { get { return neurons; } }
 
-        private List<Neuron> neurons;
-        private bool isBiased;
-        private LayerType layerType; 
+        private readonly List<Neuron> neurons;
+        private readonly bool isBiased;
 
         public Layer(int neuronsInPrevLayer, int neuronsInThisLayer, bool isBiased, bool isUnipolar, double minWeight, double maxWeight, LayerType layerType = LayerType.Undefined)
         {
@@ -21,18 +19,17 @@ namespace MLP_Logic.Logic
             NeuronsInThisLayer = neuronsInThisLayer;
             neurons = new List<Neuron>();
             this.isBiased = isBiased;
-            this.layerType = layerType;
 
             for (int i = 0; i < neuronsInThisLayer; i++)
             {
                 if (layerType == LayerType.ContextLayer)
                 {
-                    Neuron neuron = new Neuron(2, isUnipolar, minWeight, maxWeight, true);
+                    var neuron = new Neuron(2, isUnipolar, minWeight, maxWeight, true);
                     neurons.Add(neuron);
                 }
                 else
                 {
-                    Neuron neuron = new Neuron(neuronsInPrevLayer + ((isBiased) ? 1 : 0), isUnipolar, minWeight, maxWeight);
+                    var neuron = new Neuron(neuronsInPrevLayer + ((isBiased) ? 1 : 0), isUnipolar, minWeight, maxWeight);
                     neurons.Add(neuron);
                 }
                 
@@ -41,22 +38,14 @@ namespace MLP_Logic.Logic
 
         public double[] Calculate(double[] arguments, Layer contextLayer = null)
         {
-            double[] result = new double[neurons.Count];
-            double[] argumentsExtended;
+            var result = new double[neurons.Count];
 
-            if (isBiased)
-            {
-                argumentsExtended = arguments.Concat<double>(new double[] { 1.0 }).ToArray<double>();
-            }
-            else
-            {
-                argumentsExtended = arguments;
-            }
+            double[] argumentsExtended = isBiased ? arguments.Concat(new[] { 1.0 }).ToArray() : arguments;
             if (contextLayer != null)
             {
                 foreach (var neuron in contextLayer.Neurons)
                 {
-                    argumentsExtended = argumentsExtended.Concat<double>(new double[] { neuron.OutputValue }).ToArray<double>();
+                    argumentsExtended = argumentsExtended.Concat(new[] { neuron.OutputValue }).ToArray();
                 }
             }
 

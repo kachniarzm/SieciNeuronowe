@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Contexts;
 using MLP_Logic.Enums;
 
 namespace MLP_Logic.Logic
@@ -12,7 +11,7 @@ namespace MLP_Logic.Logic
     class ElmanNeuronNetwork : NeuronNetwork
     {
         public List<Layer> ContextLayers { get; private set; }
-        private double[] contextNeuronArguments = new double[2];
+        private readonly double[] contextNeuronArguments = new double[2];
 
         public ElmanNeuronNetwork(List<int> neuronsInLayer, bool isBiased, bool isUnipolar, double minWeight, double maxWeight, int inputNumber)
         {
@@ -24,7 +23,7 @@ namespace MLP_Logic.Logic
             MaxWeight = maxWeight;
             OutputNumber = (neuronsInLayer.Count > 0) ? neuronsInLayer[neuronsInLayer.Count - 1] : 0;//liczba neuronów w warstwie wyjściowej
             InputNumber = (neuronsInLayer.Count > 0) ? inputNumber : 0; //liczba wejść do neuronu w warstwie wejściowej 
-            
+
             if (neuronsInLayer.Count - 2 >= 0)
             {
                 //TWORZENIE WARSTWY WYJŚCIOWEJ
@@ -32,7 +31,7 @@ namespace MLP_Logic.Logic
                     neuronsInLayer[neuronsInLayer.Count - 1], LayerType.OutputLayer);
                 Layers.Add(outputLayer);
 
-                for (int i = neuronsInLayer.Count - 2; i >=1; i--)
+                for (int i = neuronsInLayer.Count - 2; i >= 1; i--)
                 {
                     //TWORZENIE WARSTW UKRYTYCH
                     Layer layer = CreateLayer(neuronsInLayer[i - 1] + neuronsInLayer[i], neuronsInLayer[i], LayerType.HiddenLayer);
@@ -43,7 +42,7 @@ namespace MLP_Logic.Logic
             }
 
             //TWORZENIE PIERWSZEJ WARSTWY (wejściowa, ale jest to jednocześnie pierwsza warstwa ukryta)
-            Layer inputLayer = CreateLayer(InputNumber + neuronsInLayer[0],neuronsInLayer[0], LayerType.InputLayer);
+            Layer inputLayer = CreateLayer(InputNumber + neuronsInLayer[0], neuronsInLayer[0], LayerType.InputLayer);
             Layers.Add(inputLayer);
             //TWORZENIE PIERWSZEJ WARSTWY KONTEKSTOWEJ
             ContextLayers.Add(CreateLayer(neuronsInLayer[0], neuronsInLayer[0], LayerType.ContextLayer));
@@ -68,9 +67,7 @@ namespace MLP_Logic.Logic
 
             for (int i = 0; i < Layers.Count; i++)
             {
-                if (i < ContextLayers.Count)
-                    result = Layers[i].Calculate(scaledArguments, ContextLayers[i]);
-                else result = Layers[i].Calculate(scaledArguments);
+                result = i < ContextLayers.Count ? Layers[i].Calculate(scaledArguments, ContextLayers[i]) : Layers[i].Calculate(scaledArguments);
                 scaledArguments = result;
             }
             for (int i = 0; i < ContextLayers.Count; i++)

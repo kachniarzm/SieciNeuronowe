@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MLP_Logic.Enums;
 
 namespace MLP_Logic.Logic
@@ -18,7 +15,7 @@ namespace MLP_Logic.Logic
     class JordanNeuronNetwork : NeuronNetwork
     {
         public List<Layer> ContextLayer { get; private set; }
-        private double[] contextNeuronArguments = new double[2];
+        private readonly double[] contextNeuronArguments = new double[2];
 
         public JordanNeuronNetwork(List<int> neuronsInLayer, bool isBiased, bool isUnipolar, double minWeight, double maxWeight, int inputNumber)
         {
@@ -67,9 +64,9 @@ namespace MLP_Logic.Logic
             double[] result = null;
             var scaledArguments = ScaleFunctionValue(arguments, minInputValues, maxInputValues);
 
-            for (int i = 0; i < Layers.Count; i++)
+            foreach (Layer layer in Layers)
             {
-                result = Layers[i].Calculate(scaledArguments,ContextLayer[0]);
+                result = layer.Calculate(scaledArguments,ContextLayer[0]);
                 scaledArguments = result;
             }
              for (int i=0; i< ContextLayer[0].Neurons.Count;i++)
