@@ -14,9 +14,6 @@ namespace MLP_Data
             if (indexName == IndexName.Undefined)
                 throw new ArgumentException("indexName cannot be undefined");
 
-            if (indexName == IndexName.TimeSeries)
-                throw new NotImplementedException("GetData handles only stock indexes");
-
             var fileFullPath = GetFileFullPath(indexName.ToString());
 
             var result = new List<object>();
