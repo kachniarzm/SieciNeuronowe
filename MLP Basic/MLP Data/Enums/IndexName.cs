@@ -6,6 +6,7 @@
         
         WIG20,
         SP500,
+        WIG20Closing,
         
         TimeSeries,
         
