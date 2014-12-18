@@ -60,7 +60,7 @@ namespace MLP_Data
                 return typeof(StockExchangeListing);
             if (predictionChoice == IndexName.SP500)
                 return typeof(StockExchangeListingBase);
-            if (predictionChoice.ToString().Contains("Function"))
+            if (predictionChoice.ToString().Contains("Function") || predictionChoice == IndexName.WIG20Closing)
                 return typeof(Function1);
 
             throw new ArgumentException("GetTypeByPredictionChoice");
