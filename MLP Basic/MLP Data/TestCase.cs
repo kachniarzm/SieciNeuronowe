@@ -17,6 +17,7 @@ namespace MLP_Data
         public double[] Input
         {
             get { return _input; }
+            set { _input = value; }
         }
 
         public double[] Output
