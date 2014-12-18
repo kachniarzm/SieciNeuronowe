@@ -1,10 +1,10 @@
-﻿using MLP_Data.Attributes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using MLP_Data.Attributes;
 
-namespace MLP_Data.Entity
+namespace MLP_Data
 {
     public class TestCase
     {
@@ -17,6 +17,7 @@ namespace MLP_Data.Entity
         public double[] Input
         {
             get { return _input; }
+            set { _input = value; }
         }
 
         public double[] Output

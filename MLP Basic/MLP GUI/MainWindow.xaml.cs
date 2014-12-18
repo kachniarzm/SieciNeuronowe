@@ -101,6 +101,8 @@ namespace MLP_GUI
             TestCasesDownPercentLabel.Content = String.Format("{0:F2}%", result.TestCasesDownPercent);
             FillLaxbel(TestDownPredRateLabel, result.TestCorrectDownPredictionsRate);
 
+            InputColumnsNumber.Content = result.InputColumns;
+
             double trend = Math.Max(result.TestCasesDownPercent, result.TestCasesUpPercent) / 100;
             if (result.TestCorrectDirectionPredictionsRate < 0.5)
             {
@@ -295,8 +297,11 @@ namespace MLP_GUI
                 inertiaCoefficient.Text,
                 proportionalDivisionSlider.Value,
                 viewModel.SelectedIndexName,
-                 viewModel.SelectedStep, viewModel.SelectedDensity, viewModel.SelectedWindowLength
-                );
+                viewModel.SelectedStep, 
+                viewModel.SelectedDensity, 
+                viewModel.SelectedWindowLength,
+                usePca.IsChecked != null && (bool)usePca.IsChecked,
+                maxColumns.Text);
 
             if (!environment.IsValid)
             {
@@ -338,6 +343,13 @@ For example: 2;3;4 stands for two neurons in input layer, three in next one and 
         private void UpdateTitle()
         {
             Title = String.Format("MLP Basic by Kachniarz and Luśtyk {0}", DateTime.Now);
+        }
+
+        private void usePca_Click(object sender, RoutedEventArgs e)
+        {
+            if (maxColumns == null) return;
+
+            maxColumns.IsEnabled = usePca.IsChecked == true;
         }
     }
 }

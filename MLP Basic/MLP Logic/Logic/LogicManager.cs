@@ -28,6 +28,8 @@ namespace MLP_Logic.Logic
         private InputDataDateUnits windowLength;
         private InputDataDateUnits density;
         private IndexName predictionChoice;
+        private int maxInputColumns;
+        private bool usePca;
         private List<TestCase> trainingSet;
         private List<TestCase> validationSet;
         private List<TestCase> testSet;
@@ -60,6 +62,8 @@ namespace MLP_Logic.Logic
             density = dto.Density;
             windowLength = dto.WindowLength;
             predictionChoice = dto.PredictionChoice;
+            maxInputColumns = dto.MaxInputColumns;
+            usePca = dto.UsePca;
         }
 
         private List<TestCase> SetTrainingSet(List<TestCase> data, int count)
@@ -158,7 +162,7 @@ namespace MLP_Logic.Logic
             {
                 List<TestCase> data = CasesCreator.Create(
                     CsvReader.GetData(predictionChoice, CasesCreator.GetTypeByPredictionChoice(predictionChoice)),
-                    windowLength, density, step).ToList();
+                    windowLength, density, step, true, usePca, maxInputColumns).ToList();
                 SetNeuronNetwork(neuronNetworkDto, data[0].Input.Count());
 
                 var percentValidationSet = 0.1;
@@ -280,6 +284,7 @@ namespace MLP_Logic.Logic
                 }
 
                 ResultDTO resultDto = SetResult(network.InputNumber, network.OutputNumber);
+                resultDto.InputColumns = trainingSet[0].Input.Length;
                 resultDto.TrainingCasesUpPercent = (double)totalUp / trainingSet.Count() * 100;
                 resultDto.TrainingCasesDownPercent = (double)totalDown / trainingSet.Count() * 100;
                 resultDto.ErrorsPerIterations = errorsPerIterations;

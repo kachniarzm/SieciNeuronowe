@@ -10,13 +10,15 @@ namespace MLP_Data
         // Assumption:
         // collection[0] - most recent day
         // collection[n] - most past day
-        public static IEnumerable<TestCase> Create(List<object> collection,
+        public static List<TestCase> Create(List<object> collection,
             InputDataDateUnits windowLength,
             InputDataDateUnits density,
             InputDataDateUnits step = InputDataDateUnits.Day,
-            bool formOldest = true)
+            bool formOldest = true,
+            bool usePca = true,
+            int inputVectorMaxLenght = 10)
         {
-            if (collection == null) yield break;
+            if (collection == null) return null;
 
             int daysInWindowLength = windowLength.GetDaysNumber();
             int dataFrequency = density.GetDaysNumber();
@@ -38,6 +40,7 @@ namespace MLP_Data
             }
 
             int nextCaseDirection = formOldest ? -1 : 1;
+            var testCases = new List<TestCase>();
 
             for (int currentCaseNumber = 0, currentStartDay = (formOldest) ? 1 + (casesNumber - 1) * daysInStep : 1;
                 currentCaseNumber < casesNumber;
@@ -50,8 +53,15 @@ namespace MLP_Data
                 }
                 var testCase = new TestCase { InputRawData = inputRawData, OutputRawData = collection[currentStartDay - 1] };
 
-                yield return testCase;
+                testCases.Add(testCase);
             }
+
+            if (usePca)
+            {
+                PcaOptimizator.Optimize(testCases, inputVectorMaxLenght);
+            }         
+
+            return testCases;
         }
 
         public static Type GetTypeByPredictionChoice(IndexName predictionChoice)
