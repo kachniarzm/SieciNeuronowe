@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MLP_Logic.Enums;
 
 namespace MLP_Logic.Logic
 {
@@ -18,26 +19,28 @@ namespace MLP_Logic.Logic
             OutputNumber = (neuronsInLayer.Count > 0) ? neuronsInLayer[neuronsInLayer.Count - 1] : 0;//liczba neuronów w warstwie wyjściowej
 
             //TWORZENIE WARSTWY WEJŚCIOWEJ
-            Layer inputLayer = CreateLayer(InputNumber,neuronsInLayer[0]);
+            Layer inputLayer = CreateLayer(InputNumber,neuronsInLayer[0], LayerType.InputLayer);
             Layers.Add(inputLayer);
             //-------------------------
             //TWORZENIE WARSTW UKRYTYCH i WYJŚCIOWEJ
-            for (int i = 1; i < neuronsInLayer.Count; i++)
+            for (int i = 1; i < neuronsInLayer.Count-1; i++)
             {
-                Layer layer = CreateLayer(neuronsInLayer[i - 1], neuronsInLayer[i]);
+                Layer layer = CreateLayer(neuronsInLayer[i - 1], neuronsInLayer[i], LayerType.HiddenLayer);
                 Layers.Add(layer);
             }
+            Layer outputLayer = CreateLayer(neuronsInLayer[neuronsInLayer.Count - 2], neuronsInLayer[neuronsInLayer.Count - 1], LayerType.OutputLayer);
+            Layers.Add(outputLayer);
         }
 
-        public double[] Calculate(
-            double[] arguments,
-            List<double> maxInputValues,
-            List<double> minInputValues,
-            List<double> maxOutputValues,
-            List<double> minOutputValues,
-            double[] predictedResult = null,
-            double learningCoefficient = 0.1,
-            double inertia = 0.5)
+         public override double[] Calculate(
+          double[] arguments,
+          List<double> maxInputValues,
+          List<double> minInputValues,
+          List<double> maxOutputValues,
+          List<double> minOutputValues,
+          double[] predictedResult = null,
+          double learningCoefficient = 0.1,
+          double inertia = 0.5)
         {
             double[] result = null;
             var scaledArguments = ScaleFunctionValue(arguments, minInputValues, maxInputValues);

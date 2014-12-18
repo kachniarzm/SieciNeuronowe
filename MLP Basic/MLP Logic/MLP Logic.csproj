@@ -44,8 +44,11 @@
     <Compile Include="DTO\NeuronNetworkDTO.cs" />
     <Compile Include="DTO\ResultDTO.cs" />
     <Compile Include="DTO\SetDTO.cs" />
+    <Compile Include="Enums\LayerType.cs" />
     <Compile Include="Enums\NeuronNetworkType.cs" />
     <Compile Include="Logic\BackPropagationLearningMethod.cs" />
+    <Compile Include="Logic\INeuronNetwork.cs" />
+    <Compile Include="Logic\JordanNeuronNetwork.cs" />
     <Compile Include="Logic\Layer.cs" />
     <Compile Include="Logic\LogicManager.cs" />
     <Compile Include="Logic\Neuron.cs" />

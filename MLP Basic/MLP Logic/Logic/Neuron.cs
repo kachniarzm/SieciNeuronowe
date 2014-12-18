@@ -8,6 +8,7 @@ namespace MLP_Logic.Logic
         public double this[int i] { get { return weights[i]; } set { weights[i] = value; } }
         public int InputNumbers { get { return weights.Count(); } }
         public bool IsUnipolar { get; set; }
+        public bool IsContextNeuron { get; set; }
         public double OutputValue { get; set; }
         public double Error { get; set; }
         public double DeltaError { get; set; }
@@ -27,10 +28,19 @@ namespace MLP_Logic.Logic
             }
         }
 
-        public Neuron(int inputNumbers, bool isUnipolar, double minWeight, double maxWeight)
+        public Neuron(int inputNumbers, bool isUnipolar, double minWeight, double maxWeight, bool isContextLayer = false)
         {
             weights = new double[inputNumbers];
-            SetWeights(minWeight, maxWeight);
+            OutputValue = 0;
+            if (isContextLayer == true)
+            {
+                weights[0] = 1;
+                weights[1] = 0.5;
+            }
+            else
+            {
+                SetWeights(minWeight, maxWeight);
+            }
             IsUnipolar = isUnipolar;
         }
 
