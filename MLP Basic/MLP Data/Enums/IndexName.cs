@@ -7,6 +7,7 @@
         WIG20,
         SP500,
         WIG20Closing,
+        WIG20withMacro,
         
         TimeSeriesGaussMap,
         TimeSeriesLogisticMap,

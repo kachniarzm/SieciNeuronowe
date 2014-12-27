@@ -50,6 +50,7 @@
     <Compile Include="Entity\Function1.cs" />
     <Compile Include="Entity\StockExchangeListingBase.cs" />
     <Compile Include="Entity\StockExchangeListing.cs" />
+    <Compile Include="Entity\StockExchangeListingWithMacro.cs" />
     <Compile Include="Enums\IndexName.cs" />
     <Compile Include="Enums\InputDataDateUnits.cs" />
     <Compile Include="PcaOptimizator.cs" />
