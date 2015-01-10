@@ -68,11 +68,14 @@ namespace MLP_Data
         {
             if (predictionChoice == IndexName.WIG20)
                 return typeof(StockExchangeListing);
+            if (predictionChoice == IndexName.WIG20withMacro)
+                return typeof(StockExchangeListingWithMacro);
             if (predictionChoice == IndexName.SP500)
                 return typeof(StockExchangeListingBase);
             if (predictionChoice.ToString().Contains("Function")
                 || predictionChoice.ToString().Contains("TimeSeries")
-                || predictionChoice == IndexName.WIG20Closing)
+                || predictionChoice == IndexName.WIG20Closing
+                )
                 return typeof(Function1);
 
             throw new ArgumentException("GetTypeByPredictionChoice");
