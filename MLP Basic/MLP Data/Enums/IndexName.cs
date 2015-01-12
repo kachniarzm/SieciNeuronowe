@@ -13,6 +13,7 @@
         TimeSeriesLogisticMap,
         TimeSeriesSineMap,
         TimeSeriesTentMap,
+        TimeSeriesWrongOrder,
         
         SinFunction,
         LineFunction,
