@@ -4,16 +4,20 @@ namespace MLP_Logic.DTO
 {
     public class EnvironmentDTO : BaseDTO
     {
-        public int IterationNumber { get; private set; }
-        public double LearningCoefficient { get; private set; }
-        public double InertiaCoefficient { get; private set; }
-        public double ProportionalDivisionTrainingTestData { get; private set; }
-        public IndexName PredictionChoice { get; private set; }
-        public InputDataDateUnits Step { get; private set; }
-        public InputDataDateUnits Density { get; private set; }
-        public InputDataDateUnits WindowLength { get; private set; }
-        public int MaxInputColumns { get; private set; }
-        public bool UsePca { get; private set; }
+        public int IterationNumber { get; set; }
+        public double LearningCoefficient { get; set; }
+        public double InertiaCoefficient { get; set; }
+        public double ProportionalDivisionTrainingTestData { get; set; }
+        public IndexName PredictionChoice { get; set; }
+        public InputDataDateUnits Step { get; set; }
+        public InputDataDateUnits Density { get; set; }
+        public InputDataDateUnits WindowLength { get; set; }
+        public int MaxInputColumns { get; set; }
+        public bool UsePca { get; set; }
+
+        public EnvironmentDTO()
+        {
+        }
 
         public EnvironmentDTO(string iterationNumber, string learningCoefficient, string inertiaCoefficient, double proportionalDivision, IndexName predictionChoice,
             InputDataDateUnits step, InputDataDateUnits density, InputDataDateUnits windowLength, bool usePca, string maxInputColumns)
