@@ -66,20 +66,9 @@ namespace MLP_Logic.Logic
             usePca = dto.UsePca;
         }
 
-        private List<TestCase> SetTrainingSet(List<TestCase> data, int count)
+        private List<TestCase> SetSet(List<TestCase> data, int from, int count)
         {
-            return data.GetRange(0, count);
-        }
-
-        private List<TestCase> SetValidationSet(List<TestCase> data, int count)
-        {
-            return data.GetRange(data.Count - count, count);
-        }
-
-        private List<TestCase> SetTestSet(List<TestCase> data, int count, double percentOfSet)
-        {
-            int testSetCount = (int)(percentOfSet * count);
-            return data.GetRange(data.Count - count, testSetCount);
+            return data.GetRange(from, count);
         }
 
         private void FindMaxAndMinInSet()
@@ -166,12 +155,13 @@ namespace MLP_Logic.Logic
                 SetNeuronNetwork(neuronNetworkDto, data[0].Input.Count());
 
                 var percentValidationSet = 0.1;
-                var elementsInTrainingSet = (int)(data.Count() * proportionalDivisionTrainingTestData / 100);
-                var elementsInTestSet = data.Count - elementsInTrainingSet;
-                var elementsInValidationSet = (int)(elementsInTestSet * percentValidationSet);
-                trainingSet = SetTrainingSet(data, elementsInTrainingSet);
-                testSet = SetTestSet(data, elementsInTestSet, 1 - percentValidationSet);
-                validationSet = SetValidationSet(data, elementsInValidationSet);
+                var elementsInTrainingSet = (int)((data.Count() * proportionalDivisionTrainingTestData / 100) * (1 - percentValidationSet));
+                var elementsInValidationSet = (int)((data.Count() * proportionalDivisionTrainingTestData / 100) * percentValidationSet);
+                var elementsInTestSet = data.Count - (elementsInTrainingSet+elementsInValidationSet);
+                trainingSet = SetSet(data, 0, elementsInTrainingSet);
+                validationSet = SetSet(data, elementsInTrainingSet, elementsInValidationSet);
+                testSet = SetSet(data, elementsInTrainingSet+elementsInValidationSet, elementsInTestSet);
+               
 
                 FindMaxAndMinInSet();
 
@@ -328,12 +318,21 @@ namespace MLP_Logic.Logic
                     resultDto.TrainingCaseValue.Add(trainingSet[i].Output[0]);
                 }
 
+                resultDto.ValidationCaseDay = new List<double>();
+                resultDto.ValidationCaseValue = new List<double>();
+
+                for (int i = 0; i < validationSet.Count; i++)
+                {
+                    resultDto.ValidationCaseDay.Add(trainingSet.Count + i);
+                    resultDto.ValidationCaseValue.Add(validationSet[i].Output[0]);
+                }
+
                 resultDto.TestCaseDay = new List<double>();
                 resultDto.TestCaseValue = new List<double>();
 
                 for (int i = 0; i < testSet.Count; i++)
                 {
-                    resultDto.TestCaseDay.Add(trainingSet.Count + i);
+                    resultDto.TestCaseDay.Add(trainingSet.Count + validationSet.Count  + i);
                     resultDto.TestCaseValue.Add(testSet[i].Output[0]);
                 }
 
@@ -354,6 +353,20 @@ namespace MLP_Logic.Logic
                         inertiaCoefficient))[0]);
                 }
 
+                for (int i = 0; i < validationSet.Count; i++)
+                {
+                    resultDto.NetworkPredictionCaseDay.Add(trainingSet.Count+i);
+                    resultDto.NetworkPredictedValue.Add((network.Calculate(
+                        validationSet[i].Input,
+                        maxInputValues,
+                        minInputValues,
+                        maxOutputValues,
+                        minOutputValues,
+                        null,
+                        learningCoefficient,
+                        inertiaCoefficient))[0]);
+                }
+
                 int totalUp = 0;
                 int totalDown = 0;
                 int correctUpPred = 0;
@@ -362,7 +375,7 @@ namespace MLP_Logic.Logic
 
                 for (int i = 0; i < testSet.Count; i++)
                 {
-                    resultDto.NetworkPredictionCaseDay.Add(trainingSet.Count + i);
+                    resultDto.NetworkPredictionCaseDay.Add(trainingSet.Count + validationSet.Count + i);
                     double expetedResult = testSet[i].Output[0];
                     double prevResult = testSet[i].OutputInPreviousCase[0];
                     double networkResult = (network.Calculate(

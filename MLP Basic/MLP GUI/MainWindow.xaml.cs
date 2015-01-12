@@ -174,6 +174,17 @@ namespace MLP_GUI
                 networkPredictionLineSeries.MarkerFill = OxyColors.Red;
                 networkPredictionLineSeries.Color = OxyColors.Red;
 
+                var validationCaseLineSeries = new LineSeries
+                {
+                    LineStyle = LineStyle.Solid,
+                    MarkerType = MarkerType.Circle,
+                    Title = "Validation Cases Stock Index"
+                };
+                validationCaseLineSeries.MarkerSize = validationCaseLineSeries.MarkerSize * 0.5;
+                validationCaseLineSeries.MarkerFill = OxyColors.Orange;
+                validationCaseLineSeries.Color = OxyColors.Orange;
+
+
                 var testCaseLineSeries = new LineSeries 
                 {
                     LineStyle = LineStyle.Solid,
@@ -199,6 +210,11 @@ namespace MLP_GUI
                     testCaseLineSeries.Points.Add(new DataPoint(result.TestCaseDay[i], result.TestCaseValue[i]));
                 }
 
+                for (int i = 0; i < result.ValidationCaseDay.Count; i++)
+                {
+                    validationCaseLineSeries.Points.Add(new DataPoint(result.ValidationCaseDay[i],result.ValidationCaseValue[i]));
+                }
+
                 for (int i = 0; i < result.TrainingCaseDay.Count; i++)
                 {
                     trainingCaseLineSeries.Points.Add(new DataPoint(result.TrainingCaseDay[i], result.TrainingCaseValue[i]));
@@ -210,6 +226,7 @@ namespace MLP_GUI
                 }
 
                 viewModel.SpecialCasePlotModel.Series.Add(trainingCaseLineSeries);
+                viewModel.SpecialCasePlotModel.Series.Add(validationCaseLineSeries);
                 viewModel.SpecialCasePlotModel.Series.Add(testCaseLineSeries);
                 viewModel.SpecialCasePlotModel.Series.Add(networkPredictionLineSeries);
 
