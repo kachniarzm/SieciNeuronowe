@@ -112,10 +112,10 @@ namespace MLP_Basic.ViewModels
             InitializePlot();
 
             SelectedNeuronNetworkType = NeuronNetworkType.MLP;
-            SelectedWindowLength = InputDataDateUnits.Week;
+            SelectedWindowLength = InputDataDateUnits.Day;
             SelectedDensity = InputDataDateUnits.Day;
             SelectedStep = InputDataDateUnits.Day;
-            SelectedIndexName = IndexName.WIG20;
+            SelectedIndexName = IndexName.TimeSeriesOur;
         }
 
         private void InitializePlot()
