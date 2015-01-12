@@ -5,6 +5,7 @@ using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -71,7 +72,8 @@ namespace MLP_GUI
                 ((Button)sender).Content = "Run";
                 ProgressBar.Visibility = Visibility.Collapsed;
                 ResultLabel.Visibility = Visibility.Visible;
-                MessageBox.Show("Task completed", "Task completed", MessageBoxButton.OK);
+                MessageBox.Show(String.Format("{0} copied to clipboard", result.ErrorsPerIterations.Last()), "Task completed", MessageBoxButton.OK);
+                Clipboard.SetText(result.ErrorsPerIterations.Last().ToString());
             }
 
             ((Button)sender).IsEnabled = true; 
