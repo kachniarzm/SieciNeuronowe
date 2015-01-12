@@ -9,7 +9,6 @@
         WIG20Closing,
         WIG20withMacro,
         
-        TimeSeriesGaussMap,
         TimeSeriesLogisticMap,
         TimeSeriesSineMap,
         TimeSeriesTentMap,
