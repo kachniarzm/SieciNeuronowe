@@ -5,6 +5,7 @@ using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -50,14 +51,25 @@ namespace MLP_GUI
                 ProgressBar.Maximum = environmentDto.IterationNumber;
                 IProgress<int> progressFunction = new Progress<int>(value => { ProgressBar.Value = value; });
 
+                List<ResultDTO> resultList = new List<ResultDTO>();
                 ResultDTO result = null;
+                double resultError = 0;
                 logicManager.SetEnviorment(environmentDto);
 #if !DEBUG
                 try
                 {
 #endif
+                    int testCasesNumber = 10;
 
-                result = await logicManager.Run(neuronNetworkDto, progressFunction);
+                    for (int i = 0; i < testCasesNumber; i++)
+                    {
+                        ProgressBar.Value = 0;
+                        result = await logicManager.Run(neuronNetworkDto, progressFunction);
+                        resultList.Add(result);
+                        resultError += result.ErrorsPerIterations.Last();
+                    }
+
+                    resultError /= testCasesNumber;
 
 #if !DEBUG
                 }
@@ -72,8 +84,8 @@ namespace MLP_GUI
                 ((Button)sender).Content = "Run";
                 ProgressBar.Visibility = Visibility.Collapsed;
                 ResultLabel.Visibility = Visibility.Visible;
-                MessageBox.Show(String.Format("{0} copied to clipboard", result.ErrorsPerIterations.Last()), "Task completed", MessageBoxButton.OK);
-                Clipboard.SetText(result.ErrorsPerIterations.Last().ToString());
+                MessageBox.Show(String.Format("{0} copied to clipboard", resultError), "Task completed", MessageBoxButton.OK);
+                Clipboard.SetText(resultError.ToString());
             }
 
             ((Button)sender).IsEnabled = true; 
