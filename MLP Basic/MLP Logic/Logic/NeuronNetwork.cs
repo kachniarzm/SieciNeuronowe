@@ -23,8 +23,8 @@ namespace MLP_Logic.Logic
 
         protected double[] ScaleFunctionValue(double[] value, List<double> minFunctionValue, List<double> maxFunctionValue)
         {
-            double newMin = IsUnipolar ? 0 : -1;
-            const double newMax = 1;
+            double newMin = IsUnipolar ? 0.2 : -0.8;
+            const double newMax = 0.8;
             var scaledResult = new double[value.Length];
             for (int i = 0; i < value.Length; i++)
             {
@@ -32,16 +32,23 @@ namespace MLP_Logic.Logic
             }
             return scaledResult;
         }
-
+        
         protected double[] RescaleFunctionValue(double[] value, List<double> minFunctionValue, List<double> maxFunctionValue)
         {
-            double oldMin = IsUnipolar ? 0 : -1;
-            const double oldMax = 1;
+            double oldMin = IsUnipolar ? 0.2 : -0.8;
+            const double oldMax = 0.8;
             var rescaledResult = new double[value.Length];
             for (int i = 0; i < value.Length; i++)
             {
                 rescaledResult[i] = ((value[i] - oldMin) / (oldMax - oldMin)) * (maxFunctionValue[i] - minFunctionValue[i]) + minFunctionValue[i];
+
+                if (rescaledResult[i] > maxFunctionValue[i])
+                    rescaledResult[i] = maxFunctionValue[i];
+
+                if (rescaledResult[i] < minFunctionValue[i])
+                    rescaledResult[i] = minFunctionValue[i];
             }
+
             return rescaledResult;
         }
 

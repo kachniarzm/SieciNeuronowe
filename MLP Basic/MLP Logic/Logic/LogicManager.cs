@@ -106,8 +106,8 @@ namespace MLP_Logic.Logic
                 if (currentMin >= currentMax)
                     currentMax += 1;
 
-                currentMin -= (currentMax - currentMin) / 5;
-                currentMax += (currentMax - currentMin) / 5;
+                //currentMin -= (currentMax - currentMin) / 5;
+                //currentMax += (currentMax - currentMin) / 5;
 
                 maxInputValues.Add(currentMax);
                 minInputValues.Add(currentMin);
