@@ -9,6 +9,7 @@
         WIG20Closing,
         WIG20withMacro,
         
+        TimeSeriesOur,
         TimeSeriesLogisticMap,
         TimeSeriesSineMap,
         TimeSeriesTentMap,
