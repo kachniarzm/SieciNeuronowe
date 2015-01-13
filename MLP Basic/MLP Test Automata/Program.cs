@@ -74,7 +74,7 @@ namespace MLP_Test_Automata
                         resultError /= TestCasesNumber;
                         Console.WriteLine("{0} / LC {1} / IC {2}: {3}", networkType, lcItem, icItem, resultError);
 
-                        var newLine = string.Format("{0},{1},{2},{3}{4}", networkType, lcItem, icItem, resultError, Environment.NewLine);
+                        var newLine = string.Format("{0};{1};{2};{3}{4}", networkType, lcItem, icItem, resultError, Environment.NewLine);
                         csvFile.Append(newLine);
 
                         
