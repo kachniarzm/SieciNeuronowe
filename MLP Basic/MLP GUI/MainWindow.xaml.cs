@@ -59,7 +59,7 @@ namespace MLP_GUI
                 try
                 {
 #endif
-                    int testCasesNumber = 10;
+                    int testCasesNumber = 1;
 
                     for (int i = 0; i < testCasesNumber; i++)
                     {

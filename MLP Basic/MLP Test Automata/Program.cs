@@ -37,6 +37,7 @@ namespace MLP_Test_Automata
         private async static void Run()
         {
             var csvFile = new StringBuilder();
+
             foreach (var icItem in IcList)
             {
                 foreach (var lcItem in LcList)
@@ -76,12 +77,10 @@ namespace MLP_Test_Automata
 
                         var newLine = string.Format("{0};{1};{2};{3}{4}", networkType, lcItem, icItem, resultError, Environment.NewLine);
                         csvFile.Append(newLine);
-
-                        
-                        //Logger.Info("{0} / LC {1} / IC {2}: {3}", networkType, lcItem, icItem, resultError);
                     }
                 }
             }
+
             File.WriteAllText(@"../../../Test data/csvTestFile.csv", csvFile.ToString());
         }
     }
