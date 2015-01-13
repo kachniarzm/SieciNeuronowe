@@ -93,94 +93,98 @@ namespace MLP_Test_Automata
         {
             var csvFile = new StringBuilder();
             var startTime = DateTime.Now;
-            var currentTestCaseTotal = 0;
-            var maxTestCaseTotal = _windowLengthList.Count *
-                              _densityList.Count *
-                              _stepList.Count *
-                              _maxInputColumnsList.Count *
-                              _neuronStructureList.Count *
-                              _iterationNumberList.Count *
-                              _inertiaCoeficientList.Count *
-                              _learningCoeficientList.Count *
-                              _neuronNetworkTypeList.Count *
-                              TestCasesNumber;
 
-            csvFile.AppendLine(String.Format("User:;{0}", Environment.UserName));
-            csvFile.AppendLine(String.Format("IndexName:;{0}", PredictionChoice));
-            csvFile.AppendLine(String.Format("StartDate:;{0}", startTime.ToString("G")));
-            csvFile.AppendLine(String.Format("CalculationTime:;<CalculationTime>"));
-            csvFile.AppendLine(String.Format("TestCasesNumber:;{0}", TestCasesNumber));
-            csvFile.AppendLine(String.Format("ProportionalDivisionTrainingTestData:;{0}", ProportionalDivisionTrainingTestData));
-            csvFile.AppendLine(String.Format("networkType;learningCoefficient;inertiaCoefficient;iterationNumber;neuronStructure;maxInputColumns;windowLength;density;step;resultError"));
+            try
+            {              
+                var currentTestCaseTotal = 0;
+                var maxTestCaseTotal = _windowLengthList.Count *
+                                  _densityList.Count *
+                                  _stepList.Count *
+                                  _maxInputColumnsList.Count *
+                                  _neuronStructureList.Count *
+                                  _iterationNumberList.Count *
+                                  _inertiaCoeficientList.Count *
+                                  _learningCoeficientList.Count *
+                                  _neuronNetworkTypeList.Count *
+                                  TestCasesNumber;
 
-            foreach (var windowLength in _windowLengthList)
-            {
-                foreach (var density in _densityList)
+                csvFile.AppendLine(String.Format("User:;{0}", Environment.UserName));
+                csvFile.AppendLine(String.Format("IndexName:;{0}", PredictionChoice));
+                csvFile.AppendLine(String.Format("StartDate:;{0}", startTime.ToString("G")));
+                csvFile.AppendLine(String.Format("CalculationTime:;<CalculationTime>"));
+                csvFile.AppendLine(String.Format("TestCasesNumber:;{0}", TestCasesNumber));
+                csvFile.AppendLine(String.Format("ProportionalDivisionTrainingTestData:;{0}", ProportionalDivisionTrainingTestData));
+                csvFile.AppendLine(String.Format("networkType;learningCoefficient;inertiaCoefficient;iterationNumber;neuronStructure;maxInputColumns;windowLength;density;step;resultError"));
+
+                foreach (var windowLength in _windowLengthList)
                 {
-                    foreach (var step in _stepList)
+                    foreach (var density in _densityList)
                     {
-                        foreach (var maxInputColumns in _maxInputColumnsList)
+                        foreach (var step in _stepList)
                         {
-                            foreach (var neuronStructure in _neuronStructureList)
+                            foreach (var maxInputColumns in _maxInputColumnsList)
                             {
-                                foreach (var iterationNumber in _iterationNumberList)
+                                foreach (var neuronStructure in _neuronStructureList)
                                 {
-                                    foreach (var inertiaCoefficient in _inertiaCoeficientList)
+                                    foreach (var iterationNumber in _iterationNumberList)
                                     {
-                                        foreach (var learningCoefficient in _learningCoeficientList)
+                                        foreach (var inertiaCoefficient in _inertiaCoeficientList)
                                         {
-                                            EnvironmentDTO environmentDto = new EnvironmentDTO()
+                                            foreach (var learningCoefficient in _learningCoeficientList)
                                             {
-                                                IterationNumber = iterationNumber,
-                                                LearningCoefficient = learningCoefficient,
-                                                InertiaCoefficient = inertiaCoefficient,
-                                                ProportionalDivisionTrainingTestData = ProportionalDivisionTrainingTestData,
-                                                Density = density,
-                                                WindowLength = windowLength,
-                                                Step = step,
-                                                PredictionChoice = PredictionChoice,
-                                                UsePca = maxInputColumns > 0,
-                                                MaxInputColumns = maxInputColumns
-                                            };
-
-                                            foreach (var networkType in _neuronNetworkTypeList)
-                                            {
-                                                NeuronNetworkDTO neuronNetworkDto = new NeuronNetworkDTO(
-                                                    neuronStructure,
-                                                    true, true, networkType);
-
-                                                double resultError = 0;
-
-                                                for (var currentTestCase = 0;
-                                                    currentTestCase < TestCasesNumber;
-                                                    currentTestCase++, currentTestCaseTotal++)
+                                                EnvironmentDTO environmentDto = new EnvironmentDTO()
                                                 {
-                                                    LogicManager.SetEnviorment(environmentDto);
-                                                    ResultDTO result = LogicManager.RunSync(neuronNetworkDto,
-                                                        DummyProgessFunction);
-                                                    resultError += result.ErrorsPerIterations.Last();
-                                                    DateTime aproximateEndTime = startTime.Add(new TimeSpan(0,0,0,0,
-                                                        (int)((DateTime.Now - startTime).Duration().TotalMilliseconds * maxTestCaseTotal / currentTestCaseTotal)));
-                                                    Console.Title = String.Format("Done {0} from {1} test cases. Aproximate end time: {2}",
-                                                        currentTestCaseTotal, maxTestCaseTotal, aproximateEndTime.ToString("F"));
+                                                    IterationNumber = iterationNumber,
+                                                    LearningCoefficient = learningCoefficient,
+                                                    InertiaCoefficient = inertiaCoefficient,
+                                                    ProportionalDivisionTrainingTestData = ProportionalDivisionTrainingTestData,
+                                                    Density = density,
+                                                    WindowLength = windowLength,
+                                                    Step = step,
+                                                    PredictionChoice = PredictionChoice,
+                                                    UsePca = maxInputColumns > 0,
+                                                    MaxInputColumns = maxInputColumns
+                                                };
+
+                                                foreach (var networkType in _neuronNetworkTypeList)
+                                                {
+                                                    NeuronNetworkDTO neuronNetworkDto = new NeuronNetworkDTO(
+                                                        neuronStructure,
+                                                        true, true, networkType);
+
+                                                    double resultError = 0;
+
+                                                    for (var currentTestCase = 0;
+                                                        currentTestCase < TestCasesNumber;
+                                                        currentTestCase++, currentTestCaseTotal++)
+                                                    {
+                                                        LogicManager.SetEnviorment(environmentDto);
+                                                        ResultDTO result = LogicManager.RunSync(neuronNetworkDto,
+                                                            DummyProgessFunction);
+                                                        resultError += result.ErrorsPerIterations.Last();
+                                                        DateTime aproximateEndTime = startTime.Add(new TimeSpan(0, 0, 0, 0,
+                                                            (int)((DateTime.Now - startTime).Duration().TotalMilliseconds * maxTestCaseTotal / currentTestCaseTotal)));
+                                                        Console.Title = String.Format("Done {0} from {1} test cases. Aproximate end time: {2}",
+                                                            currentTestCaseTotal, maxTestCaseTotal, aproximateEndTime.ToString("F"));
+                                                    }
+
+                                                    resultError /= TestCasesNumber;
+
+                                                    var newLine = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9}",
+                                                        networkType,
+                                                        learningCoefficient,
+                                                        inertiaCoefficient,
+                                                        iterationNumber,
+                                                        neuronStructure.Replace(";", "~"),
+                                                        maxInputColumns == 0 ? "no PCA" : maxInputColumns.ToString(),
+                                                        windowLength,
+                                                        density,
+                                                        step,
+                                                        resultError);
+
+                                                    Console.WriteLine(newLine);
+                                                    csvFile.AppendLine(newLine);
                                                 }
-
-                                                resultError /= TestCasesNumber;
-
-                                                var newLine = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9}",
-                                                    networkType,
-                                                    learningCoefficient,
-                                                    inertiaCoefficient,
-                                                    iterationNumber,
-                                                    neuronStructure.Replace(";", "~"),
-                                                    maxInputColumns == 0 ? "no PCA" : maxInputColumns.ToString(),
-                                                    windowLength,
-                                                    density,
-                                                    step,
-                                                    resultError);
-
-                                                Console.WriteLine(newLine);
-                                                csvFile.AppendLine(newLine);
                                             }
                                         }
                                     }
@@ -189,13 +193,20 @@ namespace MLP_Test_Automata
                         }
                     }
                 }
+
+                var endTime = DateTime.Now;
+                var calculationTime = endTime - startTime;
+                csvFile.Replace("<CalculationTime>", calculationTime.ToString(@"hh\:mm\:ss"));
+
+                File.WriteAllText(String.Format(@"../../../Result data/result_{0}.csv", startTime.ToString("G").Replace(" ", "_").Replace(":", ".")), csvFile.ToString());
             }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: {0}", e.Message);
+                Console.ReadLine();
 
-            var endTime = DateTime.Now;
-            var calculationTime = endTime - startTime;
-            csvFile.Replace("<CalculationTime>", calculationTime.ToString(@"hh\:mm\:ss"));
-
-            File.WriteAllText(String.Format(@"../../../Result data/result_{0}.csv", startTime.ToString("G").Replace(" ", "_").Replace(":", ".")), csvFile.ToString());
+                File.WriteAllText(String.Format(@"../../../Result data/result_{0}_ErrorOccurs.csv", startTime.ToString("G").Replace(" ", "_").Replace(":", ".")), csvFile.ToString());
+            }
         }
     }
 }
