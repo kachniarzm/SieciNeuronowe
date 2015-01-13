@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using MLP_Data.Enums;
 using MLP_Logic.DTO;
 using MLP_Logic.Enums;
@@ -11,7 +13,7 @@ namespace MLP_Test_Automata
 {
     class Program
     {
-        private const int TestCasesNumber = 10;
+        private const int TestCasesNumber = 100;
         private const int IterationNumber = 500;
         private const string NeuronStructure = "5;1";
         private static readonly List<NeuronNetworkType> NeuronNetworkTypes = new List<NeuronNetworkType>{
@@ -34,6 +36,7 @@ namespace MLP_Test_Automata
 
         private async static void Run()
         {
+            var csvFile = new StringBuilder();
             foreach (var icItem in IcList)
             {
                 foreach (var lcItem in LcList)
@@ -63,17 +66,23 @@ namespace MLP_Test_Automata
                         for (int i1 = 0; i1 < TestCasesNumber; i1++)
                         {
                             LogicManager.SetEnviorment(environmentDto);
-                            ResultDTO result = await LogicManager.Run(neuronNetworkDto, DummyProgessFunction);
+                            ResultDTO result = LogicManager.RunSync(neuronNetworkDto, DummyProgessFunction);
                             resultList.Add(result);
                             resultError += result.ErrorsPerIterations.Last();
                         }
 
                         resultError /= TestCasesNumber;
+                        Console.WriteLine("{0} / LC {1} / IC {2}: {3}", networkType, lcItem, icItem, resultError);
 
+                        var newLine = string.Format("{0},{1},{2},{3}{4}", networkType, lcItem, icItem, resultError, Environment.NewLine);
+                        csvFile.Append(newLine);
+
+                        
                         //Logger.Info("{0} / LC {1} / IC {2}: {3}", networkType, lcItem, icItem, resultError);
                     }
                 }
             }
+            File.WriteAllText(@"../../../Test data/csvTestFile.csv", csvFile.ToString());
         }
     }
 }
