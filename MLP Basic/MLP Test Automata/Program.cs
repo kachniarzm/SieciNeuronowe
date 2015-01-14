@@ -31,12 +31,12 @@ namespace MLP_Test_Automata
 
         static void Main()
         {
-            InitParameters1();
+            InitParameters2();
 
-            #if DEBUG
+#if DEBUG
                 Console.WriteLine("Debug mode. If starting long tests better choose Release mode and restart. Continue anyway? (press enter for yes)");
                 Console.ReadLine();
-            #endif
+#endif
 
             if (System.Diagnostics.Debugger.IsAttached)
             {
@@ -56,6 +56,48 @@ namespace MLP_Test_Automata
             _neuronStructureList = new List<string>
             {
                 "5;1"
+            };
+            _neuronNetworkTypeList = new List<NeuronNetworkType>
+            {
+                NeuronNetworkType.MLP,
+                NeuronNetworkType.Jordan,
+                NeuronNetworkType.Elman
+            };
+            _learningCoeficientList = new List<double>
+            {
+                0, 0.2, 0.4, 0.6, 0.8, 1
+            };
+            _inertiaCoeficientList = new List<double>
+            {
+                0, 0.2, 0.4, 0.6, 0.8, 1
+            };
+            _maxInputColumnsList = new List<int> // 0 means do not use PCA
+            {
+                0
+            };
+            _densityList = new List<InputDataDateUnits>
+            {
+                InputDataDateUnits.Day
+            };
+            _windowLengthList = new List<InputDataDateUnits>
+            {
+                InputDataDateUnits.Day
+            };
+            _stepList = new List<InputDataDateUnits>
+            {
+                InputDataDateUnits.Day
+            };
+        }
+
+        private static void InitParameters2()
+        {
+            _iterationNumberList = new List<int>
+            {
+                100, 500
+            };
+            _neuronStructureList = new List<string>
+            {
+                "2;1", "3;1", "5;1", "10;1", "30;1", "2;2;1", "3;3;1", "5;5;1", "10;10;1"
             };
             _neuronNetworkTypeList = new List<NeuronNetworkType>
             {
