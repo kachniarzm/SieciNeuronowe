@@ -12,9 +12,9 @@ namespace MLP_Test_Automata
 {
     class Program
     {
-        private const int TestCasesNumber = 100;
+        private const int TestCasesNumber = 20;
         private const double ProportionalDivisionTrainingTestData = 0.7;
-        private const IndexName PredictionChoice = IndexName.TimeSeriesOur;
+        private const IndexName PredictionChoice = IndexName.WIG20withMacro;
 
         private static List<int> _iterationNumberList;
         private static List<string> _neuronStructureList;
@@ -31,7 +31,10 @@ namespace MLP_Test_Automata
 
         static void Main()
         {
-            InitParameters2();
+
+            InitParametersWig20();
+            //InitParametersTimeSeries();
+
 
 #if DEBUG
                 Console.WriteLine("Debug mode. If starting long tests better choose Release mode and restart. Continue anyway? (press enter for yes)");
@@ -47,15 +50,57 @@ namespace MLP_Test_Automata
             Run();
         }
 
-        private static void InitParameters1()
+        private static void InitParametersWig20()
         {
             _iterationNumberList = new List<int>
             {
-                500
+                1000,3000,5000
             };
             _neuronStructureList = new List<string>
             {
-                "5;1"
+                "7;1","8;1","10;1","15;1","30;1","7;7;1","8;8;1","10;10;1","15;15;1","30;30;1",
+            };
+            _neuronNetworkTypeList = new List<NeuronNetworkType>
+            {
+                NeuronNetworkType.MLP,
+                NeuronNetworkType.Jordan,
+                NeuronNetworkType.Elman
+            };
+            _learningCoeficientList = new List<double>
+            {
+                0, 0.2, 0.4, 0.6, 0.8, 1
+            };
+            _inertiaCoeficientList = new List<double>
+            {
+                0, 0.2, 0.4, 0.6, 0.8, 1
+            };
+            _maxInputColumnsList = new List<int> // 0 means do not use PCA
+            {
+                0
+            };
+            _densityList = new List<InputDataDateUnits>
+            {
+                InputDataDateUnits.Day
+            };
+            _windowLengthList = new List<InputDataDateUnits>
+            {
+                InputDataDateUnits.Week
+            };
+            _stepList = new List<InputDataDateUnits>
+            {
+                InputDataDateUnits.Day
+            };
+        }
+
+        private static void InitParametersTimeSeries()
+        {
+            _iterationNumberList = new List<int>
+            {
+                100,500,1000
+            };
+            _neuronStructureList = new List<string>
+            {
+                "10;1"
             };
             _neuronNetworkTypeList = new List<NeuronNetworkType>
             {
@@ -89,47 +134,7 @@ namespace MLP_Test_Automata
             };
         }
 
-        private static void InitParameters2()
-        {
-            _iterationNumberList = new List<int>
-            {
-                100, 500
-            };
-            _neuronStructureList = new List<string>
-            {
-                "2;1", "3;1", "5;1", "10;1", "30;1", "2;2;1", "3;3;1", "5;5;1", "10;10;1"
-            };
-            _neuronNetworkTypeList = new List<NeuronNetworkType>
-            {
-                NeuronNetworkType.MLP,
-                NeuronNetworkType.Jordan,
-                NeuronNetworkType.Elman
-            };
-            _learningCoeficientList = new List<double>
-            {
-                0, 0.2, 0.4, 0.6, 0.8, 1
-            };
-            _inertiaCoeficientList = new List<double>
-            {
-                0, 0.2, 0.4, 0.6, 0.8, 1
-            };
-            _maxInputColumnsList = new List<int> // 0 means do not use PCA
-            {
-                0
-            };
-            _densityList = new List<InputDataDateUnits>
-            {
-                InputDataDateUnits.Day
-            };
-            _windowLengthList = new List<InputDataDateUnits>
-            {
-                InputDataDateUnits.Day
-            };
-            _stepList = new List<InputDataDateUnits>
-            {
-                InputDataDateUnits.Day
-            };
-        }
+   
 
         private static void Run()
         {
@@ -137,7 +142,7 @@ namespace MLP_Test_Automata
             var startTime = DateTime.Now;
 
             try
-            {              
+            {
                 var currentTestCaseTotal = 0;
                 var maxTestCaseTotal = _windowLengthList.Count *
                                   _densityList.Count *
@@ -156,7 +161,20 @@ namespace MLP_Test_Automata
                 csvFile.AppendLine(String.Format("CalculationTime:;<CalculationTime>"));
                 csvFile.AppendLine(String.Format("TestCasesNumber:;{0}", TestCasesNumber));
                 csvFile.AppendLine(String.Format("ProportionalDivisionTrainingTestData:;{0}", ProportionalDivisionTrainingTestData));
-                csvFile.AppendLine(String.Format("networkType;learningCoefficient;inertiaCoefficient;iterationNumber;neuronStructure;maxInputColumns;windowLength;density;step;resultError"));
+                if (PredictionChoice == IndexName.WIG20withMacro)
+                {
+                    csvFile.AppendLine(String.Format("networkType;learningCoefficient;inertiaCoefficient;iterationNumber;neuronStructure;maxInputColumns;windowLength;density;step;resultError;TestCorrectDirectionPredictionsRate;Trend;LastTrainingCorrectDirectionPredictionsRate"));
+                }
+                else if (PredictionChoice == IndexName.TimeSeriesOur)
+                {
+                    csvFile.AppendLine(String.Format("networkType;learningCoefficient;inertiaCoefficient;iterationNumber;neuronStructure;maxInputColumns;windowLength;density;step;resultError"));
+                }
+                else
+                {
+                    Console.WriteLine("Error: PredictionChoice={0} Not Implemented", PredictionChoice);
+                    Console.ReadLine();
+                    return;
+                }
 
                 foreach (var windowLength in _windowLengthList)
                 {
@@ -195,6 +213,9 @@ namespace MLP_Test_Automata
                                                         true, true, networkType);
 
                                                     double resultError = 0;
+                                                    double testCorrectDirectionPredictionsRate = 0;
+                                                    double trend = 0;
+                                                    double lastTrainingCorrectDirectionPredictionsRate = 0;
 
                                                     for (var currentTestCase = 0;
                                                         currentTestCase < TestCasesNumber;
@@ -204,6 +225,11 @@ namespace MLP_Test_Automata
                                                         ResultDTO result = LogicManager.RunSync(neuronNetworkDto,
                                                             DummyProgessFunction);
                                                         resultError += result.ErrorsPerIterations.Last();
+                                                        testCorrectDirectionPredictionsRate =
+                                                            result.TestCorrectDirectionPredictionsRate;
+                                                        trend = Math.Max(result.TestCasesDownPercent, result.TestCasesUpPercent) / 100;
+                                                        lastTrainingCorrectDirectionPredictionsRate =
+                                                            result.LastTrainingCorrectDirectionPredictionsRate;
                                                         DateTime aproximateEndTime = startTime.Add(new TimeSpan(0, 0, 0, 0,
                                                             (int)((DateTime.Now - startTime).Duration().TotalMilliseconds * maxTestCaseTotal / currentTestCaseTotal)));
                                                         Console.Title = String.Format("Done {0} from {1} test cases. Aproximate end time: {2}",
@@ -211,18 +237,51 @@ namespace MLP_Test_Automata
                                                     }
 
                                                     resultError /= TestCasesNumber;
-
-                                                    var newLine = String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9}",
-                                                        networkType,
-                                                        learningCoefficient,
-                                                        inertiaCoefficient,
-                                                        iterationNumber,
-                                                        neuronStructure.Replace(";", "~"),
-                                                        maxInputColumns == 0 ? "no PCA" : maxInputColumns.ToString(),
-                                                        windowLength,
-                                                        density,
-                                                        step,
-                                                        resultError);
+                                                    string newLine="";
+                                                    if (PredictionChoice == IndexName.WIG20withMacro)
+                                                    {
+                                                         newLine =
+                                                          String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};{11};{12}",
+                                                              networkType,
+                                                              learningCoefficient,
+                                                              inertiaCoefficient,
+                                                              iterationNumber,
+                                                              neuronStructure.Replace(";", "~"),
+                                                              maxInputColumns == 0
+                                                                  ? "no PCA"
+                                                                  : maxInputColumns.ToString(),
+                                                              windowLength,
+                                                              density,
+                                                              step,
+                                                              resultError,
+                                                              testCorrectDirectionPredictionsRate,
+                                                              trend,
+                                                              lastTrainingCorrectDirectionPredictionsRate);
+                                                    }
+                                                    else if (PredictionChoice == IndexName.TimeSeriesOur)
+                                                    {
+                                                         newLine =
+                                                            String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9}",
+                                                                networkType,
+                                                                learningCoefficient,
+                                                                inertiaCoefficient,
+                                                                iterationNumber,
+                                                                neuronStructure.Replace(";", "~"),
+                                                                maxInputColumns == 0
+                                                                    ? "no PCA"
+                                                                    : maxInputColumns.ToString(),
+                                                                windowLength,
+                                                                density,
+                                                                step,
+                                                                resultError);
+                                                    }
+                                                    else
+                                                    {
+                                                        Console.WriteLine("Error: PredictionChoice={0} Not Implemented", PredictionChoice);
+                                                        Console.ReadLine();
+                                                        return;
+                                                    }
+                                                    
 
                                                     Console.WriteLine(newLine);
                                                     csvFile.AppendLine(newLine);
