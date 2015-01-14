@@ -31,8 +31,10 @@ namespace MLP_Test_Automata
 
         static void Main()
         {
+
             InitParametersWig20();
             //InitParametersTimeSeries();
+
 
 #if DEBUG
                 Console.WriteLine("Debug mode. If starting long tests better choose Release mode and restart. Continue anyway? (press enter for yes)");
@@ -131,6 +133,8 @@ namespace MLP_Test_Automata
                 InputDataDateUnits.Day
             };
         }
+
+   
 
         private static void Run()
         {
