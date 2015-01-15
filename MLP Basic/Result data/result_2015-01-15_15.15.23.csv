@@ -1,0 +1,37 @@
+User:;komputer;;;;;;;;
+IndexName:;TimeSeriesOur;;;;;;;;
+StartDate:;2015-01-15 15:15;;;;;;;;
+CalculationTime:;00:01:49;;;;;;;;
+TestCasesNumber:;5;;;;;;;;
+ProportionalDivisionTrainingTestData:;70;;;;;;;;
+networkType;learningCoefficient;inertiaCoefficient;iterationNumber;neuronStructure;maxInputColumns;windowLength;density;step;resultError
+MLP;1;0;100;10~10~1;no PCA;Day;Day;Day;1,35E-05
+MLP;1;0;100;20~20~1;no PCA;Day;Day;Day;1,44E-05
+Jordan;1;0;100;20~20~1;no PCA;Day;Day;Day;1,96E-05
+Jordan;1;0;100;10~10~1;no PCA;Day;Day;Day;2,20E-05
+MLP;1;0;100;5~5~1;no PCA;Day;Day;Day;2,47E-05
+Jordan;1;0;100;30~30~1;no PCA;Day;Day;Day;2,49E-05
+MLP;1;0;100;30~30~1;no PCA;Day;Day;Day;3,95E-05
+Elman;1;0;100;10~10~1;no PCA;Day;Day;Day;6,16E-05
+Elman;1;0;100;20~20~1;no PCA;Day;Day;Day;9,77E-05
+Elman;1;0;100;20~1;no PCA;Day;Day;Day;0,00012176
+Elman;1;0;100;30~1;no PCA;Day;Day;Day;0,000122689
+Elman;1;0;100;30~30~1;no PCA;Day;Day;Day;0,000150031
+MLP;1;0;100;3~1;no PCA;Day;Day;Day;0,00029354
+Jordan;1;0;100;30~1;no PCA;Day;Day;Day;0,000320003
+Jordan;1;0;100;20~1;no PCA;Day;Day;Day;0,000329422
+Elman;1;0;100;10~1;no PCA;Day;Day;Day;0,000331879
+MLP;1;0;100;20~1;no PCA;Day;Day;Day;0,000373539
+Jordan;1;0;100;10~1;no PCA;Day;Day;Day;0,000388006
+MLP;1;0;100;30~1;no PCA;Day;Day;Day;0,000415431
+Elman;1;0;100;5~5~1;no PCA;Day;Day;Day;0,000495373
+Jordan;1;0;100;5~5~1;no PCA;Day;Day;Day;0,000570231
+MLP;1;0;100;10~1;no PCA;Day;Day;Day;0,000848929
+Jordan;1;0;100;5~1;no PCA;Day;Day;Day;0,000850503
+Elman;1;0;100;5~1;no PCA;Day;Day;Day;0,000952961
+MLP;1;0;100;5~1;no PCA;Day;Day;Day;0,001007162
+MLP;1;0;100;3~3~1;no PCA;Day;Day;Day;0,001111783
+Jordan;1;0;100;3~3~1;no PCA;Day;Day;Day;0,001566525
+Elman;1;0;100;3~1;no PCA;Day;Day;Day;0,001621001
+Elman;1;0;100;3~3~1;no PCA;Day;Day;Day;0,001723679
+Jordan;1;0;100;3~1;no PCA;Day;Day;Day;0,001852421
