@@ -1,0 +1,10 @@
+User:;Maciej
+IndexName:;TimeSeriesOur
+StartDate:;2015-01-15 16:22:55
+CalculationTime:;00:03:10
+TestCasesNumber:;5
+ProportionalDivisionTrainingTestData:;70
+networkType;learningCoefficient;inertiaCoefficient;iterationNumber;neuronStructure;maxInputColumns;windowLength;density;step;resultError
+Elman;1;0;1000;10~10~1;no PCA;Day;Day;Day;8,14604444158057E-06
+Elman;1;0;100;10~10~1;no PCA;Day;Day;Day;5,08570279442539E-05
+Elman;1;0;500;10~10~1;no PCA;Day;Day;Day;1,78724560516676E-05

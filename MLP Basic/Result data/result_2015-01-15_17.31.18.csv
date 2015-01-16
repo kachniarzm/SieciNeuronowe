@@ -1,0 +1,25 @@
+User:;Maciej
+IndexName:;TimeSeriesOur
+StartDate:;2015-01-15 17:31:18
+CalculationTime:;00:03:34
+TestCasesNumber:;5
+ProportionalDivisionTrainingTestData:;70
+networkType;learningCoefficient;inertiaCoefficient;iterationNumber;neuronStructure;maxInputColumns;windowLength;density;step;resultError
+Elman;1;0;100;10~10~1;no PCA;Day;Day;Day;7,8703913251333E-05
+Elman;1,2;0;100;10~10~1;no PCA;Day;Day;Day;5,00935495229065E-05
+Elman;1,4;0;100;10~10~1;no PCA;Day;Day;Day;0,000131741372715137
+Elman;1,6;0;100;10~10~1;no PCA;Day;Day;Day;0,00023793863093824
+Elman;1,8;0;100;10~10~1;no PCA;Day;Day;Day;0,000128287884939448
+Elman;2;0;100;10~10~1;no PCA;Day;Day;Day;0,000304306130457821
+Elman;3;0;100;10~10~1;no PCA;Day;Day;Day;0,0123083184817048
+Elman;4;0;100;10~10~1;no PCA;Day;Day;Day;0,0395311386170833
+Elman;10;0;100;10~10~1;no PCA;Day;Day;Day;0,0748428444376718
+Elman;1;0,5;100;10~10~1;no PCA;Day;Day;Day;0,0534254967815557
+Elman;1,2;0,5;100;10~10~1;no PCA;Day;Day;Day;0,0541047373938337
+Elman;1,4;0,5;100;10~10~1;no PCA;Day;Day;Day;0,0547942680154192
+Elman;1,6;0,5;100;10~10~1;no PCA;Day;Day;Day;0,0554928317138736
+Elman;1,8;0,5;100;10~10~1;no PCA;Day;Day;Day;0,056201566066072
+Elman;2;0,5;100;10~10~1;no PCA;Day;Day;Day;0,0569202964929556
+Elman;3;0,5;100;10~10~1;no PCA;Day;Day;Day;0,0606627297853149
+Elman;4;0,5;100;10~10~1;no PCA;Day;Day;Day;0,0646617689051661
+Elman;10;0,5;100;10~10~1;no PCA;Day;Day;Day;0,0937220389059536
