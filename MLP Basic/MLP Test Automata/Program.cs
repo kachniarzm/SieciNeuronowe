@@ -12,8 +12,8 @@ namespace MLP_Test_Automata
 {
     class Program
     {
-        private const int TestCasesNumber = 20;
-        private const double ProportionalDivisionTrainingTestData = 0.7;
+        private const int TestCasesNumber = 3;
+        private const double ProportionalDivisionTrainingTestData = 70.0;
         private const IndexName PredictionChoice = IndexName.WIG20withMacro;
 
         private static List<int> _iterationNumberList;
@@ -54,11 +54,11 @@ namespace MLP_Test_Automata
         {
             _iterationNumberList = new List<int>
             {
-                1000,3000,5000
+                2000
             };
             _neuronStructureList = new List<string>
             {
-                "7;1","8;1","10;1","15;1","30;1","7;7;1","8;8;1","10;10;1","15;15;1","30;30;1",
+                "10;10;1","8;8;1"
             };
             _neuronNetworkTypeList = new List<NeuronNetworkType>
             {
@@ -68,11 +68,11 @@ namespace MLP_Test_Automata
             };
             _learningCoeficientList = new List<double>
             {
-                0, 0.2, 0.4, 0.6, 0.8, 1
+                0.8
             };
             _inertiaCoeficientList = new List<double>
             {
-                0, 0.2, 0.4, 0.6, 0.8, 1
+                0.1
             };
             _maxInputColumnsList = new List<int> // 0 means do not use PCA
             {
@@ -84,6 +84,7 @@ namespace MLP_Test_Automata
             };
             _windowLengthList = new List<InputDataDateUnits>
             {
+                //InputDataDateUnits.Day
                 InputDataDateUnits.Week
             };
             _stepList = new List<InputDataDateUnits>
@@ -96,11 +97,11 @@ namespace MLP_Test_Automata
         {
             _iterationNumberList = new List<int>
             {
-                100,500,1000
+                100
             };
             _neuronStructureList = new List<string>
             {
-                "10;1"
+                "5;1","10;1","20;1","30;1","5;5;1","20;20;1"
             };
             _neuronNetworkTypeList = new List<NeuronNetworkType>
             {
@@ -110,11 +111,11 @@ namespace MLP_Test_Automata
             };
             _learningCoeficientList = new List<double>
             {
-                0, 0.2, 0.4, 0.6, 0.8, 1
+                1
             };
             _inertiaCoeficientList = new List<double>
             {
-                0, 0.2, 0.4, 0.6, 0.8, 1
+                0
             };
             _maxInputColumnsList = new List<int> // 0 means do not use PCA
             {

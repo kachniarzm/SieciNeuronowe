@@ -1,0 +1,10 @@
+User:;komputer
+IndexName:;WIG20withMacro
+StartDate:;2015-01-15 16:16:07
+CalculationTime:;<CalculationTime>
+TestCasesNumber:;3
+ProportionalDivisionTrainingTestData:;70
+networkType;learningCoefficient;inertiaCoefficient;iterationNumber;neuronStructure;maxInputColumns;windowLength;density;step;resultError;TestCorrectDirectionPredictionsRate;Trend;LastTrainingCorrectDirectionPredictionsRate
+MLP;0,8;0,1;2000;10~10~1;no PCA;Week;Day;Day;1023,12038258272;0,486202365308804;0,505913272010513;0,52740369558409
+Jordan;0,8;0,1;2000;10~10~1;no PCA;Week;Day;Day;1021,9073167091;0,487516425755585;0,505913272010513;0,532414657062324
+Elman;0,8;0,1;2000;10~10~1;no PCA;Week;Day;Day;1019,2024432006;0,486859395532194;0,505913272010513;0,521453178828688

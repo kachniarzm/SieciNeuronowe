@@ -72,6 +72,8 @@ namespace MLP_Data
                 return typeof(StockExchangeListingWithMacro);
             if (predictionChoice == IndexName.SP500)
                 return typeof(StockExchangeListingBase);
+            if (predictionChoice == IndexName.Wig20ClosingAndVolumeOnly)
+                return typeof (StockExchangeListingClosingAndVolumeOnly);
             if (predictionChoice.ToString().Contains("Function")
                 || predictionChoice.ToString().Contains("TimeSeries")
                 || predictionChoice == IndexName.WIG20Closing

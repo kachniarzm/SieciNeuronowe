@@ -8,6 +8,7 @@
         SP500,
         WIG20Closing,
         WIG20withMacro,
+        Wig20ClosingAndVolumeOnly,
         
         TimeSeriesOur,
         TimeSeriesLogisticMap,
