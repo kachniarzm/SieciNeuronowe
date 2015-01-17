@@ -4,6 +4,9 @@ namespace MLP_Logic.DTO
 {
     public class ResultDTO : BaseDTO
     {
+        public double MinValue;
+        public double MaxValue;
+
         public List<double> TestCaseDay;
         public List<double> TestCaseValue;
 

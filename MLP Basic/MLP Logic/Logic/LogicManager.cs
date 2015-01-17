@@ -162,6 +162,7 @@ namespace MLP_Logic.Logic
 
 
             FindMaxAndMinInSet();
+            
 
             if (trainingSet.Count <= 0)
             {
@@ -281,6 +282,8 @@ namespace MLP_Logic.Logic
                 correctDirectionPredictionsRateInIterations,
                 correctUpPredictionsRateInIterations,
                 correctDownPredictionsRateInIterations);
+            resultDto.MaxValue = maxOutputValues.Last();
+            resultDto.MinValue = minOutputValues.Last();
             return resultDto;
         }
 

@@ -281,7 +281,7 @@ namespace MLP_GUI
                 };
                 viewModel.SpecialCasePlotModel.Axes.Add(linearAxis1);
 
-                var linearAxis2 = new LinearAxis {Minimum = 0, Title = "Index Value"};
+                var linearAxis2 = new LinearAxis {Minimum = result.MinValue, Title = "Index Value", Maximum = result.MaxValue};
                 viewModel.SpecialCasePlotModel.Axes.Add(linearAxis2);
 
                 var linearAxis3 = new LinearAxis
