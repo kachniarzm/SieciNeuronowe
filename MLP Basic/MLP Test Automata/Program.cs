@@ -12,9 +12,9 @@ namespace MLP_Test_Automata
 {
     class Program
     {
-        private const int TestCasesNumber = 3;
+        private const int TestCasesNumber = 5;
         private const double ProportionalDivisionTrainingTestData = 70.0;
-        private const IndexName PredictionChoice = IndexName.WIG20withMacro;
+        private const IndexName PredictionChoice = IndexName.Wig20ClosingAndVolumeOnly;
 
         private static List<int> _iterationNumberList;
         private static List<string> _neuronStructureList;
@@ -58,7 +58,7 @@ namespace MLP_Test_Automata
             };
             _neuronStructureList = new List<string>
             {
-                "5;1"
+                "1;1","2;1"
             };
             _neuronNetworkTypeList = new List<NeuronNetworkType>
             {
