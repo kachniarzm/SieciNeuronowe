@@ -54,11 +54,11 @@ namespace MLP_Test_Automata
         {
             _iterationNumberList = new List<int>
             {
-                2000
+                100
             };
             _neuronStructureList = new List<string>
             {
-                "10;10;1","8;8;1"
+                "5;1"
             };
             _neuronNetworkTypeList = new List<NeuronNetworkType>
             {
@@ -156,26 +156,7 @@ namespace MLP_Test_Automata
                                   _neuronNetworkTypeList.Count *
                                   TestCasesNumber;
 
-                csvFile.AppendLine(String.Format("User:;{0}", Environment.UserName));
-                csvFile.AppendLine(String.Format("IndexName:;{0}", PredictionChoice));
-                csvFile.AppendLine(String.Format("StartDate:;{0}", startTime.ToString("G")));
-                csvFile.AppendLine(String.Format("CalculationTime:;<CalculationTime>"));
-                csvFile.AppendLine(String.Format("TestCasesNumber:;{0}", TestCasesNumber));
-                csvFile.AppendLine(String.Format("ProportionalDivisionTrainingTestData:;{0}", ProportionalDivisionTrainingTestData));
-                if (PredictionChoice == IndexName.WIG20withMacro)
-                {
-                    csvFile.AppendLine(String.Format("networkType;learningCoefficient;inertiaCoefficient;iterationNumber;neuronStructure;maxInputColumns;windowLength;density;step;resultError;TestCorrectDirectionPredictionsRate;Trend;LastTrainingCorrectDirectionPredictionsRate"));
-                }
-                else if (PredictionChoice == IndexName.TimeSeriesOur)
-                {
-                    csvFile.AppendLine(String.Format("networkType;learningCoefficient;inertiaCoefficient;iterationNumber;neuronStructure;maxInputColumns;windowLength;density;step;resultError"));
-                }
-                else
-                {
-                    Console.WriteLine("Error: PredictionChoice={0} Not Implemented", PredictionChoice);
-                    Console.ReadLine();
-                    return;
-                }
+                CreateHeadInformationInCSVFile(csvFile, startTime);
 
                 foreach (var windowLength in _windowLengthList)
                 {
@@ -213,76 +194,21 @@ namespace MLP_Test_Automata
                                                         neuronStructure,
                                                         true, true, networkType);
 
-                                                    double resultError = 0;
-                                                    double testCorrectDirectionPredictionsRate = 0;
-                                                    double trend = 0;
-                                                    double lastTrainingCorrectDirectionPredictionsRate = 0;
-
-                                                    for (var currentTestCase = 0;
-                                                        currentTestCase < TestCasesNumber;
-                                                        currentTestCase++, currentTestCaseTotal++)
-                                                    {
-                                                        LogicManager.SetEnviorment(environmentDto);
-                                                        ResultDTO result = LogicManager.RunSync(neuronNetworkDto,
-                                                            DummyProgessFunction);
-                                                        resultError += result.ErrorsPerIterations.Last();
-                                                        testCorrectDirectionPredictionsRate =
-                                                            result.TestCorrectDirectionPredictionsRate;
-                                                        trend = Math.Max(result.TestCasesDownPercent, result.TestCasesUpPercent) / 100;
-                                                        lastTrainingCorrectDirectionPredictionsRate =
-                                                            result.LastTrainingCorrectDirectionPredictionsRate;
-                                                        DateTime aproximateEndTime = startTime.Add(new TimeSpan(0, 0, 0, 0,
-                                                            (int)((DateTime.Now - startTime).Duration().TotalMilliseconds * maxTestCaseTotal / currentTestCaseTotal)));
-                                                        Console.Title = String.Format("Done {0} from {1} test cases. Aproximate end time: {2}",
-                                                            currentTestCaseTotal, maxTestCaseTotal, aproximateEndTime.ToString("F"));
-                                                    }
+                                                    double testCorrectDirectionPredictionsRate;
+                                                    double trend;
+                                                    double lastTrainingCorrectDirectionPredictionsRate;
+                                                    double testCorrectUpPredictionsRate;
+                                                    double testCorrectDownPredictionsRate;
+                                                    var resultError = RunTestCaseComputingOnNeuronNetwork(currentTestCaseTotal, environmentDto, neuronNetworkDto, 
+                                                        startTime, maxTestCaseTotal, out testCorrectDirectionPredictionsRate, out trend,
+                                                        out lastTrainingCorrectDirectionPredictionsRate, out testCorrectUpPredictionsRate,
+                                                        out testCorrectDownPredictionsRate);
 
                                                     resultError /= TestCasesNumber;
-                                                    string newLine="";
-                                                    if (PredictionChoice == IndexName.WIG20withMacro)
-                                                    {
-                                                         newLine =
-                                                          String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};{11};{12}",
-                                                              networkType,
-                                                              learningCoefficient,
-                                                              inertiaCoefficient,
-                                                              iterationNumber,
-                                                              neuronStructure.Replace(";", "~"),
-                                                              maxInputColumns == 0
-                                                                  ? "no PCA"
-                                                                  : maxInputColumns.ToString(),
-                                                              windowLength,
-                                                              density,
-                                                              step,
-                                                              resultError,
-                                                              testCorrectDirectionPredictionsRate,
-                                                              trend,
-                                                              lastTrainingCorrectDirectionPredictionsRate);
-                                                    }
-                                                    else if (PredictionChoice == IndexName.TimeSeriesOur)
-                                                    {
-                                                         newLine =
-                                                            String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9}",
-                                                                networkType,
-                                                                learningCoefficient,
-                                                                inertiaCoefficient,
-                                                                iterationNumber,
-                                                                neuronStructure.Replace(";", "~"),
-                                                                maxInputColumns == 0
-                                                                    ? "no PCA"
-                                                                    : maxInputColumns.ToString(),
-                                                                windowLength,
-                                                                density,
-                                                                step,
-                                                                resultError);
-                                                    }
-                                                    else
-                                                    {
-                                                        Console.WriteLine("Error: PredictionChoice={0} Not Implemented", PredictionChoice);
-                                                        Console.ReadLine();
-                                                        return;
-                                                    }
-                                                    
+                                                    var newLine = CreateNewLineToCSVFile(networkType, learningCoefficient, inertiaCoefficient,
+                                                        iterationNumber, neuronStructure, maxInputColumns, windowLength, density, step, resultError,
+                                                        testCorrectDirectionPredictionsRate, testCorrectDownPredictionsRate, testCorrectUpPredictionsRate, 
+                                                        trend, lastTrainingCorrectDirectionPredictionsRate);
 
                                                     Console.WriteLine(newLine);
                                                     csvFile.AppendLine(newLine);
@@ -309,6 +235,132 @@ namespace MLP_Test_Automata
 
                 File.WriteAllText(String.Format(@"../../../Result data/result_{0}_ErrorOccurs.csv", startTime.ToString("G").Replace(" ", "_").Replace(":", ".")), csvFile.ToString());
             }
+        }
+
+        private static void CreateHeadInformationInCSVFile(StringBuilder csvFile, DateTime startTime)
+        {
+            csvFile.AppendLine(String.Format("User:;{0}", Environment.UserName));
+            csvFile.AppendLine(String.Format("IndexName:;{0}", PredictionChoice));
+            csvFile.AppendLine(String.Format("StartDate:;{0}", startTime.ToString("G")));
+            csvFile.AppendLine(String.Format("CalculationTime:;<CalculationTime>"));
+            csvFile.AppendLine(String.Format("TestCasesNumber:;{0}", TestCasesNumber));
+            csvFile.AppendLine(String.Format("ProportionalDivisionTrainingTestData:;{0}", ProportionalDivisionTrainingTestData));
+            if (PredictionChoice == IndexName.WIG20withMacro ||
+                PredictionChoice == IndexName.Wig20ClosingAndVolumeOnly ||
+                PredictionChoice == IndexName.WIG20Closing)
+            {
+                csvFile.AppendLine(
+                    String.Format(
+                        "networkType;learningCoefficient;inertiaCoefficient;iterationNumber;neuronStructure;maxInputColumns;windowLength;density;step;resultError;TestCorrectDirectionPredictionsRate;TestCorrectDownPredictionsRate;TestCorrectUpPredictionsRate;Trend;LastTrainingCorrectDirectionPredictionsRate"));
+            }
+            else if (PredictionChoice == IndexName.TimeSeriesOur)
+            {
+                csvFile.AppendLine(
+                    String.Format(
+                        "networkType;learningCoefficient;inertiaCoefficient;iterationNumber;neuronStructure;maxInputColumns;windowLength;density;step;resultError"));
+            }
+            else
+            {
+                Console.WriteLine("Error: PredictionChoice={0} Not Implemented", PredictionChoice);
+                Console.ReadLine();
+                return;
+            }
+        }
+
+        private static string CreateNewLineToCSVFile(NeuronNetworkType networkType, double learningCoefficient,
+            double inertiaCoefficient, int iterationNumber, string neuronStructure, int maxInputColumns,
+            InputDataDateUnits windowLength, InputDataDateUnits density, InputDataDateUnits step, double resultError,
+            double testCorrectDirectionPredictionsRate, double testCorrectDownPredictionsRate,
+            double testCorrectUpPredictionsRate, double trend, double lastTrainingCorrectDirectionPredictionsRate)
+        {
+            string newLine = "";
+            if (PredictionChoice == IndexName.WIG20withMacro ||
+                PredictionChoice == IndexName.Wig20ClosingAndVolumeOnly ||
+                PredictionChoice == IndexName.WIG20Closing)
+            {
+                newLine =
+                    String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};{11};{12};{13};{14}",
+                        networkType,
+                        learningCoefficient,
+                        inertiaCoefficient,
+                        iterationNumber,
+                        neuronStructure.Replace(";", "~"),
+                        maxInputColumns == 0
+                            ? "no PCA"
+                            : maxInputColumns.ToString(),
+                        windowLength,
+                        density,
+                        step,
+                        resultError,
+                        testCorrectDirectionPredictionsRate,
+                        testCorrectDownPredictionsRate,
+                        testCorrectUpPredictionsRate,
+                        trend,
+                        lastTrainingCorrectDirectionPredictionsRate);
+            }
+            else if (PredictionChoice == IndexName.TimeSeriesOur)
+            {
+                newLine =
+                    String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9}",
+                        networkType,
+                        learningCoefficient,
+                        inertiaCoefficient,
+                        iterationNumber,
+                        neuronStructure.Replace(";", "~"),
+                        maxInputColumns == 0
+                            ? "no PCA"
+                            : maxInputColumns.ToString(),
+                        windowLength,
+                        density,
+                        step,
+                        resultError);
+            }
+            else
+            {
+                Console.WriteLine("Error: PredictionChoice={0} Not Implemented", PredictionChoice);
+                Console.ReadLine();
+                return "Not implemented";
+            }
+            return newLine;
+        }
+
+        private static double RunTestCaseComputingOnNeuronNetwork(int currentTestCaseTotal, EnvironmentDTO environmentDto,
+            NeuronNetworkDTO neuronNetworkDto, DateTime startTime, int maxTestCaseTotal,
+            out double testCorrectDirectionPredictionsRate, out double trend,
+            out double lastTrainingCorrectDirectionPredictionsRate, out double testCorrectUpPredictionsRate,
+            out double testCorrectDownPredictionsRate)
+        {
+            double resultError = 0;
+            testCorrectDirectionPredictionsRate = 0;
+            trend = 0;
+            lastTrainingCorrectDirectionPredictionsRate = 0;
+            testCorrectUpPredictionsRate = 0;
+            testCorrectDownPredictionsRate = 0;
+
+            for (var currentTestCase = 0;
+                currentTestCase < TestCasesNumber;
+                currentTestCase++, currentTestCaseTotal++)
+            {
+                LogicManager.SetEnviorment(environmentDto);
+                ResultDTO result = LogicManager.RunSync(neuronNetworkDto,
+                    DummyProgessFunction);
+                resultError += result.ErrorsPerIterations.Last();
+                testCorrectDirectionPredictionsRate =
+                    result.TestCorrectDirectionPredictionsRate;
+                testCorrectUpPredictionsRate =
+                    result.TestCorrectUpPredictionsRate;
+                testCorrectDownPredictionsRate =
+                    result.TestCorrectDownPredictionsRate;
+
+                trend = Math.Max(result.TestCasesDownPercent, result.TestCasesUpPercent)/100;
+                lastTrainingCorrectDirectionPredictionsRate =
+                    result.LastTrainingCorrectDirectionPredictionsRate;
+                DateTime aproximateEndTime = startTime.Add(new TimeSpan(0, 0, 0, 0,
+                    (int) ((DateTime.Now - startTime).Duration().TotalMilliseconds*maxTestCaseTotal/currentTestCaseTotal)));
+                Console.Title = String.Format("Done {0} from {1} test cases. Aproximate end time: {2}",
+                    currentTestCaseTotal, maxTestCaseTotal, aproximateEndTime.ToString("F"));
+            }
+            return resultError;
         }
     }
 }
