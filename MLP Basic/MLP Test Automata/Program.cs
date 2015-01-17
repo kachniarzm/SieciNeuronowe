@@ -54,11 +54,11 @@ namespace MLP_Test_Automata
         {
             _iterationNumberList = new List<int>
             {
-                100
+                100,500,1000,5000
             };
             _neuronStructureList = new List<string>
             {
-                "1;1","2;1"
+                "1;1","2;1","4;1","8;1","2;2;1","4;4;1","8;8;1"
             };
             _neuronNetworkTypeList = new List<NeuronNetworkType>
             {
@@ -205,6 +205,11 @@ namespace MLP_Test_Automata
                                                         out testCorrectDownPredictionsRate);
 
                                                     resultError /= TestCasesNumber;
+                                                    testCorrectDirectionPredictionsRate /= TestCasesNumber;
+                                                    trend /= TestCasesNumber;
+                                                    lastTrainingCorrectDirectionPredictionsRate /= TestCasesNumber;
+                                                    testCorrectUpPredictionsRate /= TestCasesNumber;
+                                                    testCorrectDownPredictionsRate /= TestCasesNumber;
                                                     var newLine = CreateNewLineToCSVFile(networkType, learningCoefficient, inertiaCoefficient,
                                                         iterationNumber, neuronStructure, maxInputColumns, windowLength, density, step, resultError,
                                                         testCorrectDirectionPredictionsRate, testCorrectDownPredictionsRate, testCorrectUpPredictionsRate, 
@@ -345,15 +350,15 @@ namespace MLP_Test_Automata
                 ResultDTO result = LogicManager.RunSync(neuronNetworkDto,
                     DummyProgessFunction);
                 resultError += result.ErrorsPerIterations.Last();
-                testCorrectDirectionPredictionsRate =
+                testCorrectDirectionPredictionsRate +=
                     result.TestCorrectDirectionPredictionsRate;
-                testCorrectUpPredictionsRate =
+                testCorrectUpPredictionsRate +=
                     result.TestCorrectUpPredictionsRate;
-                testCorrectDownPredictionsRate =
+                testCorrectDownPredictionsRate +=
                     result.TestCorrectDownPredictionsRate;
 
-                trend = Math.Max(result.TestCasesDownPercent, result.TestCasesUpPercent)/100;
-                lastTrainingCorrectDirectionPredictionsRate =
+                trend += Math.Max(result.TestCasesDownPercent, result.TestCasesUpPercent)/100;
+                lastTrainingCorrectDirectionPredictionsRate +=
                     result.LastTrainingCorrectDirectionPredictionsRate;
                 DateTime aproximateEndTime = startTime.Add(new TimeSpan(0, 0, 0, 0,
                     (int) ((DateTime.Now - startTime).Duration().TotalMilliseconds*maxTestCaseTotal/currentTestCaseTotal)));
