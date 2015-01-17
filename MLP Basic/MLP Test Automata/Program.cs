@@ -199,7 +199,7 @@ namespace MLP_Test_Automata
                                                     double lastTrainingCorrectDirectionPredictionsRate;
                                                     double testCorrectUpPredictionsRate;
                                                     double testCorrectDownPredictionsRate;
-                                                    var resultError = RunTestCaseComputingOnNeuronNetwork(currentTestCaseTotal, environmentDto, neuronNetworkDto, 
+                                                    var resultError = RunTestCaseComputingOnNeuronNetwork(ref currentTestCaseTotal, environmentDto, neuronNetworkDto, 
                                                         startTime, maxTestCaseTotal, out testCorrectDirectionPredictionsRate, out trend,
                                                         out lastTrainingCorrectDirectionPredictionsRate, out testCorrectUpPredictionsRate,
                                                         out testCorrectDownPredictionsRate);
@@ -324,7 +324,7 @@ namespace MLP_Test_Automata
             return newLine;
         }
 
-        private static double RunTestCaseComputingOnNeuronNetwork(int currentTestCaseTotal, EnvironmentDTO environmentDto,
+        private static double RunTestCaseComputingOnNeuronNetwork(ref int currentTestCaseTotal, EnvironmentDTO environmentDto,
             NeuronNetworkDTO neuronNetworkDto, DateTime startTime, int maxTestCaseTotal,
             out double testCorrectDirectionPredictionsRate, out double trend,
             out double lastTrainingCorrectDirectionPredictionsRate, out double testCorrectUpPredictionsRate,
