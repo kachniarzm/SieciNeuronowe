@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using MLP_Data.Entity;
 using MLP_Data.Enums;
 
@@ -73,7 +74,9 @@ namespace MLP_Data
             if (predictionChoice == IndexName.SP500)
                 return typeof(StockExchangeListingBase);
             if (predictionChoice == IndexName.Wig20ClosingAndVolumeOnly)
-                return typeof (StockExchangeListingClosingAndVolumeOnly);
+                return typeof(StockExchangeListingClosingAndVolumeOnly);
+            if (predictionChoice == IndexName.WIG20with4Params)
+                return typeof (StockExchangeListing4Params);
             if (predictionChoice.ToString().Contains("Function")
                 || predictionChoice.ToString().Contains("TimeSeries")
                 || predictionChoice == IndexName.WIG20Closing
