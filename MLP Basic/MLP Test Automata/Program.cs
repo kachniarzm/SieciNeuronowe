@@ -250,9 +250,7 @@ namespace MLP_Test_Automata
             csvFile.AppendLine(String.Format("CalculationTime:;<CalculationTime>"));
             csvFile.AppendLine(String.Format("TestCasesNumber:;{0}", TestCasesNumber));
             csvFile.AppendLine(String.Format("ProportionalDivisionTrainingTestData:;{0}", ProportionalDivisionTrainingTestData));
-            if (PredictionChoice == IndexName.WIG20withMacro ||
-                PredictionChoice == IndexName.Wig20ClosingAndVolumeOnly ||
-                PredictionChoice == IndexName.WIG20Closing)
+            if (IsWig20(PredictionChoice))
             {
                 csvFile.AppendLine(
                     String.Format(
@@ -279,9 +277,7 @@ namespace MLP_Test_Automata
             double testCorrectUpPredictionsRate, double trend, double lastTrainingCorrectDirectionPredictionsRate)
         {
             string newLine = "";
-            if (PredictionChoice == IndexName.WIG20withMacro ||
-                PredictionChoice == IndexName.Wig20ClosingAndVolumeOnly ||
-                PredictionChoice == IndexName.WIG20Closing)
+            if (IsWig20(PredictionChoice))
             {
                 newLine =
                     String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};{11};{12};{13};{14}",
@@ -327,6 +323,11 @@ namespace MLP_Test_Automata
                 return "Not implemented";
             }
             return newLine;
+        }
+
+        private static bool IsWig20(IndexName predictionChoice)
+        {
+            return (predictionChoice.ToString().ToLower().StartsWith("wig20"));
         }
 
         private static double RunTestCaseComputingOnNeuronNetwork(ref int currentTestCaseTotal, EnvironmentDTO environmentDto,
