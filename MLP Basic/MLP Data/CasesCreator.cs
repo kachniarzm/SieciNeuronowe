@@ -74,6 +74,8 @@ namespace MLP_Data
                 return typeof(StockExchangeListingBase);
             if (predictionChoice == IndexName.Wig20ClosingAndVolumeOnly)
                 return typeof (StockExchangeListingClosingAndVolumeOnly);
+            if (predictionChoice == IndexName.WIG20Matkil)
+                return typeof (StockExchangeListingMatkil);
             if (predictionChoice.ToString().Contains("Function")
                 || predictionChoice.ToString().Contains("TimeSeries")
                 || predictionChoice == IndexName.WIG20Closing

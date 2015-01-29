@@ -66,7 +66,7 @@ namespace MLP_Data
                 return value;
             }
             if (property.PropertyType == typeof(DateTime))
-            {
+            {          
                 return DateTime.ParseExact(value, "yyyy-MM-dd", null);
             }
             if (property.PropertyType == typeof (IndexName))

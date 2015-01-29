@@ -12,9 +12,9 @@ namespace MLP_Test_Automata
 {
     class Program
     {
-        private const int TestCasesNumber = 5;
+        private const int TestCasesNumber = 3;
         private const double ProportionalDivisionTrainingTestData = 70.0;
-        private const IndexName PredictionChoice = IndexName.Wig20ClosingAndVolumeOnly;
+        private const IndexName PredictionChoice = IndexName.WIG20Matkil;
 
         private static List<int> _iterationNumberList;
         private static List<string> _neuronStructureList;
@@ -54,11 +54,11 @@ namespace MLP_Test_Automata
         {
             _iterationNumberList = new List<int>
             {
-                100,500,1000,5000
+                5000
             };
             _neuronStructureList = new List<string>
             {
-                "1;1","2;1","4;1","8;1","2;2;1","4;4;1","8;8;1"
+                "30;30;1","10;10;1"
             };
             _neuronNetworkTypeList = new List<NeuronNetworkType>
             {
@@ -68,15 +68,15 @@ namespace MLP_Test_Automata
             };
             _learningCoeficientList = new List<double>
             {
-                0.8
+               0.75,1
             };
             _inertiaCoeficientList = new List<double>
             {
-                0.1
+                0,0.25
             };
             _maxInputColumnsList = new List<int> // 0 means do not use PCA
             {
-                0
+                0,20
             };
             _densityList = new List<InputDataDateUnits>
             {
@@ -84,8 +84,7 @@ namespace MLP_Test_Automata
             };
             _windowLengthList = new List<InputDataDateUnits>
             {
-                //InputDataDateUnits.Day
-                InputDataDateUnits.Week
+                InputDataDateUnits.Day
             };
             _stepList = new List<InputDataDateUnits>
             {
@@ -252,7 +251,8 @@ namespace MLP_Test_Automata
             csvFile.AppendLine(String.Format("ProportionalDivisionTrainingTestData:;{0}", ProportionalDivisionTrainingTestData));
             if (PredictionChoice == IndexName.WIG20withMacro ||
                 PredictionChoice == IndexName.Wig20ClosingAndVolumeOnly ||
-                PredictionChoice == IndexName.WIG20Closing)
+                PredictionChoice == IndexName.WIG20Closing ||
+                 PredictionChoice == IndexName.WIG20Matkil)
             {
                 csvFile.AppendLine(
                     String.Format(
@@ -281,7 +281,8 @@ namespace MLP_Test_Automata
             string newLine = "";
             if (PredictionChoice == IndexName.WIG20withMacro ||
                 PredictionChoice == IndexName.Wig20ClosingAndVolumeOnly ||
-                PredictionChoice == IndexName.WIG20Closing)
+                PredictionChoice == IndexName.WIG20Closing ||
+                PredictionChoice == IndexName.WIG20Matkil)
             {
                 newLine =
                     String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};{11};{12};{13};{14}",
