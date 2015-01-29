@@ -9,8 +9,8 @@
         WIG20Closing,
         WIG20withMacro,
         Wig20ClosingAndVolumeOnly,
+        WIG20Matkil,
         WIG20with4Params,
-        
         TimeSeriesOur,
         TimeSeriesLogisticMap,
         TimeSeriesSineMap,

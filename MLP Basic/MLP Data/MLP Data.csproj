@@ -52,6 +52,7 @@
     <Compile Include="Entity\StockExchangeListing.cs" />
     <Compile Include="Entity\StockExchangeListing4Params.cs" />
     <Compile Include="Entity\StockExchangeListingClosingAndVolumeOnly.cs" />
+    <Compile Include="Entity\StockExchangeListingMatkil.cs" />
     <Compile Include="Entity\StockExchangeListingWithMacro.cs" />
     <Compile Include="Enums\IndexName.cs" />
     <Compile Include="Enums\InputDataDateUnits.cs" />
