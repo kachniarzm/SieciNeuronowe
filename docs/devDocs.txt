@@ -1,0 +1,12 @@
+0) usunąć stare wyniki WIG20 (teraz, wersja dla T i M)
+1) Uzupełnić testy ClosingOnly o dane z windowLength == day i współczynnikiem bezwładności 1 (M)
+2) opisać w dok (M)
+3) opisać w dok testy ClosingAndVolume(T)
+4) Puścić testy dla kolumn i opisać w dok(M)
+MACD
+closing
+volumen
+RSI
+osc 14-d
+i opisać w dok
+5) Puścić testy dla WIG20full i opisać w dok (T)

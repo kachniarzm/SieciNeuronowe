@@ -9,7 +9,12 @@
         WIG20Closing,
         WIG20withMacro,
         Wig20ClosingAndVolumeOnly,
+<<<<<<< HEAD
         WIG20Matkil,
+=======
+        WIG20with4Params,
+        
+>>>>>>> d2fa6f836247653b6936063e2cb227721e92059c
         TimeSeriesOur,
         TimeSeriesLogisticMap,
         TimeSeriesSineMap,
