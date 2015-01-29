@@ -1,0 +1,8 @@
+User:;Maciej
+IndexName:;WIG20Closing
+StartDate:;2015-01-26 13:33:22
+CalculationTime:;00:00:23
+TestCasesNumber:;10
+ProportionalDivisionTrainingTestData:;70
+networkType;learningCoefficient;inertiaCoefficient;iterationNumber;neuronStructure;maxInputColumns;windowLength;density;step;resultError;TestCorrectDirectionPredictionsRate;TestCorrectDownPredictionsRate;TestCorrectUpPredictionsRate;Trend;LastTrainingCorrectDirectionPredictionsRate
+MLP;1;1;500;10~1;no PCA;Week;Day;Day;2107,1409274883;0,5625;0,508720930232558;0,616279069767442;0,5;0,5
